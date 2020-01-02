@@ -1,61 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package autoEscola.Main;
-
-import autoEscola.controller.AlunoController;
-import autoEscola.controller.AulaController;
-import autoEscola.controller.InstrutorController;
 import autoEscola.controller.Menu;
-import autoEscola.model.Aluno.Aluno;
-import autoEscola.model.Aula.Aula;
-import autoEscola.model.Aula.ModalidadeAula;
-import autoEscola.model.Instrutor.Instrutor;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 
-/**
- *
- * @author casa
- */
 public class TheApp {
 
     public static void main(String[] args) {
 
-        Menu.menu();
-        //LocalDateTime dataDaora = LocalDateTime.of(2020, 10, 10, 20, 35, 0);
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm:ss");
-        //String dataFormatada = dataDaora.format(formatter);
-
-        //System.out.println(dataFormatada);
-        //AulaController.addAula((new Aula(dataDaora, ModalidadeAula.CARRO, (short) 1)), "666", "10118916971");
-        /*
-        ArrayList<Aluno> alunos = new ArrayList<>();
-        ArrayList<Instrutor> instrutores = new ArrayList<>();
-        ArrayList<Aula> aulas = new ArrayList<>();
-        instrutores.add(new Instrutor("Joao", "meuCpf"));                        
-              
-        alunos.add(new Aluno("Eu", 19, "cpf1", true));
-        alunos.add(new Aluno("Eu2", 26, "cpf2", false));
-
-       // aulas.add(new Aula(instrutores.get(0), LocalDate.of(2019, 12, 12), ModalidadeAula.MOTO));
-       // alunos.get(0).addAula(aulas.get(0));
-       // alunos.get(1).addAula(aulas.get(0));
- 
-
-        System.out.println(InstrutorController.addInstrutor(instrutores.get(0)));
-        //System.out.println(alunos.toString());   
- 
+       // Menu.menu();
         
-    
-      
-       // System.out.println("\n" + aulas);
-         */
+        if(ValidaCPF.isCPF("101.189.169-71") == true){
+            System.out.println("CPF VALIDO");
+                    
+        }
+        System.out.println(ValidacoesBancoDeDados.cpfExistenteDataBaseAluno("101.189.169-71"));
+        
     }
-
 }

@@ -7,6 +7,7 @@ import autoEscola.model.Instrutor.Instrutor;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -31,7 +32,7 @@ public class Menu {
         } while ((opcaoDesejada != 1) || (opcaoDesejada != 2) || (opcaoDesejada != 3));
     }
 
-    private static void cadastrarAluno() {       
+    private static void cadastrarAluno() {
         input.nextLine();
         System.out.println("Informe o nome completo do aluno: ");
         String nome = input.nextLine();
@@ -52,7 +53,7 @@ public class Menu {
         AlunoController.addAluno(new Aluno(nome, idade, cpf, aceitaTroca));
     }
 
-  private static void cadastrarAulaAluno() {
+    private static void cadastrarAulaAluno() {
         input.nextLine();
         System.out.println("Informe o CPF do Aluno: ");
         String cpfAluno = input.next();
@@ -78,10 +79,10 @@ public class Menu {
         input.nextLine();
         System.out.println("Informe a categoria desta Aula\n1- Carro \n2- Moto");
         byte opcaoAula = input.nextByte();
-        input.nextLine();        
-        LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);      
+        input.nextLine();
+        LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);
         if (opcaoAula == 1) {
-            AulaController.addAula((new Aula (dataAula, ModalidadeAula.CARRO, quantidadeAulas)), cpfInstrutor, cpfAluno);
+            AulaController.addAula((new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas)), cpfInstrutor, cpfAluno);
         } else if (opcaoAula == 2) {
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), cpfInstrutor, cpfAluno);
         }
@@ -97,6 +98,8 @@ public class Menu {
         System.out.println("\nInforme o CPF do Instrutor(a): ");
         String cpf = input.nextLine();
         InstrutorController.addInstrutor(new Instrutor(nomeCompleto, cpf));
-    }
+    }  
+    
+        
 
 }
