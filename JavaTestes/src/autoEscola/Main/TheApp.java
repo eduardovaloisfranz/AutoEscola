@@ -16,6 +16,7 @@ import autoEscola.model.Instrutor.Instrutor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -25,12 +26,14 @@ import java.util.ArrayList;
 public class TheApp {
 
     public static void main(String[] args) {
-       
-       Menu.menu();
-        //LocalDateTime dataDaora = LocalDateTime.of(2020, 10, 3, 10, 10, 0, 0);
-        //System.out.println(dataDaora);
-        //AulaController.addAula((new Aula((LocalDateTime.of(2020, 10, 3, 10, 10, 0, 0)), ModalidadeAula.CARRO, 1)), "666", "10118916971");
-       
+
+        Menu.menu();
+        //LocalDateTime dataDaora = LocalDateTime.of(2020, 10, 10, 20, 35, 0);
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm:ss");
+        //String dataFormatada = dataDaora.format(formatter);
+
+        //System.out.println(dataFormatada);
+        //AulaController.addAula((new Aula(dataDaora, ModalidadeAula.CARRO, (short) 1)), "666", "10118916971");
         /*
         ArrayList<Aluno> alunos = new ArrayList<>();
         ArrayList<Instrutor> instrutores = new ArrayList<>();
@@ -53,10 +56,6 @@ public class TheApp {
       
        // System.out.println("\n" + aulas);
          */
-    }
-
-    private static void menu() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

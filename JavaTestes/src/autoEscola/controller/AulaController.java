@@ -47,12 +47,12 @@ public class AulaController {
     public static void addAula(Aula aula, String cpfInstrutor, String cpfAluno){
         String SQL = "INSERT INTO aula (dataAulaInicio, dataAulaTermino, quantidadeAula, modalidadeAula, fk_instrutor, fk_aluno)" +
 "SELECT ? ,?, ?, ?, a.id, b.id" +
-"FROM instrutor a, aluno b WHERE a.cpf = ? AND b.cpf = ?";
+" FROM instrutor  a, aluno b WHERE a.cpf = ? AND b.cpf = ?";
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
         try{
             stmt = conexao.prepareStatement(SQL);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm:ss");            
             String dataFormatada = aula.getDataAulaInicio().format(formatter);
             stmt.setString(1, dataFormatada);
             dataFormatada = aula.getDataAulaTermino().format(formatter);

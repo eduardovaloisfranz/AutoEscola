@@ -5,6 +5,7 @@ import autoEscola.model.Aula.Aula;
 import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.Scanner;
 
@@ -77,8 +78,8 @@ public class Menu {
         input.nextLine();
         System.out.println("Informe a categoria desta Aula\n1- Carro \n2- Moto");
         byte opcaoAula = input.nextByte();
-        input.nextLine();
-        LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);
+        input.nextLine();        
+        LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);      
         if (opcaoAula == 1) {
             AulaController.addAula((new Aula (dataAula, ModalidadeAula.CARRO, quantidadeAulas)), cpfInstrutor, cpfAluno);
         } else if (opcaoAula == 2) {
