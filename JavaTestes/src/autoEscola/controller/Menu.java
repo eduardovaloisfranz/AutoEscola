@@ -46,7 +46,7 @@ public class Menu {
             if (ValidaCPF.isCPF(cpf) == false) {
                 System.out.println("\nCPF Inválido!\nInforme um CPF válido! ");
             }
-            
+
         } while (ValidaCPF.isCPF(cpf) == false || ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(cpf) == true);
         input.nextLine();
         System.out.println("Informe o nome completo do aluno: ");
@@ -72,40 +72,65 @@ public class Menu {
         do {
             System.out.println("Informe o CPF do Aluno: ");
             cpfAluno = input.next();
+            if (ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(cpfAluno) == false) {
+                System.out.println("Aluno NÃO ENCONTRA-SE CADASTRADO!");
+                System.out.println("Você será redicionado para o menu de cadastro de aluno!");
+                cadastrarAluno();
+            }
             if (ValidaCPF.isCPF(cpfAluno) == false) {
+                System.out.println("\nCPF Inválido!\nInforme um CPF válido! ");
+            }
+
+        } while (ValidaCPF.isCPF(cpfAluno) == false || ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(cpfAluno) == false);
+        input.nextLine();
+        String cpfInstrutor = "";
+        do {
+            System.out.println("Informe o CPF do Instrutor: ");
+            cpfInstrutor = input.next();
+            if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == false) {
+                System.out.println("Instrutor NÃO ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpfInstrutor));
+                System.out.println("Você será redirecionado para o cadastro de instrutor");
+                cadastrarInstrutor();
+            }
+            if (ValidaCPF.isCPF(cpfInstrutor) == false) {
                 System.out.println("\nCPF Inválido!\nInforme um CPF válido!");
             }
-        } while (ValidaCPF.isCPF(cpfAluno) == false);
 
-        System.out.println("Informe o CPF do Instrutor: ");
-        String cpfInstrutor = input.next();
-        System.out.println("Informe o ano da aula: ");
-        int anoAula = input.nextInt();
+        } while (ValidaCPF.isCPF(cpfInstrutor) == false || ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == false);
         input.nextLine();
-        System.out.println("Informe o mês da Aula: ");
-        byte mesAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe o dia da Aula: ");
-        byte diaAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Sera informado o horario da aula, primeiro sera solicitado a HORA e apos isso sera informado os MINUTOS\nInforme apenas a HORA da aula: ");
-        byte horaAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe apenas o MINUTO da aula:  ");
-        byte minutoAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe a quantidade de aulas: ");
-        byte quantidadeAulas = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe a categoria desta Aula\n1- Carro \n2- Moto");
-        byte opcaoAula = input.nextByte();
-        input.nextLine();
-        LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);
-        if (opcaoAula == 1) {
-            AulaController.addAula((new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
-        } else if (opcaoAula == 2) {
-            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
-        }
+        do {
+
+            System.out.println("Informe o ano da aula: ");
+            int anoAula = input.nextInt();
+            input.nextLine();
+            System.out.println("Informe o mês da Aula: ");
+            byte mesAula = input.nextByte();
+            input.nextLine();
+            System.out.println("Informe o dia da Aula: ");
+            byte diaAula = input.nextByte();
+            input.nextLine();
+            System.out.println("Sera informado o horario da aula, primeiro sera solicitado a HORA e apos isso sera informado os MINUTOS\nInforme apenas a HORA da aula: ");
+            byte horaAula = input.nextByte();
+            input.nextLine();
+            System.out.println("Informe apenas o MINUTO da aula:  ");
+            byte minutoAula = input.nextByte();
+            input.nextLine();
+            System.out.println("Informe a quantidade de aulas: ");
+            byte quantidadeAulas = input.nextByte();
+            input.nextLine();
+            System.out.println("Informe a categoria desta Aula\n1- Carro \n2- Moto");
+            byte opcaoAula = input.nextByte();
+            input.nextLine();
+            LocalDateTime dataAula = LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);            
+            
+            if (opcaoAula == 1) {
+                AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
+                
+            } else if (opcaoAula == 2) {
+                AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
+            }
+
+        } while (true);
 
         //LocalDateTime dataInicio, ModalidadeAula md, short quantidadeAulas
         //Instrutor instrutor, LocalDateTime dataInicio, ModalidadeAula md, Aluno aluno, short quantidadeAulas
@@ -113,7 +138,7 @@ public class Menu {
 
     private static void cadastrarInstrutor() {
         input.nextLine();
-         String cpfInstrutor = "";
+        String cpfInstrutor = "";
         do {
             System.out.println("Informe o CPF do Instrutor: ");
             cpfInstrutor = input.next();
@@ -123,11 +148,13 @@ public class Menu {
             if (ValidaCPF.isCPF(cpfInstrutor) == false) {
                 System.out.println("\nCPF Inválido!\nInforme um CPF válido! ");
             }
-            
+
         } while (ValidaCPF.isCPF(cpfInstrutor) == false || ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == true);
         System.out.println("Informe o nome completo do Instrutor(a): ");
-        String nomeCompleto = input.nextLine();       
+        input.nextLine();
+        String nomeCompleto = input.nextLine();
         InstrutorController.addInstrutor(new Instrutor(nomeCompleto, ValidaCPF.imprimeCPF(cpfInstrutor)));
-    }
+    }    
+   
 
 }
