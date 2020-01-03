@@ -14,9 +14,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
-    
+
     public static Scanner input = new Scanner(System.in);
-    
+
     public static void menu() {
         short opcaoDesejada = 0;
         do {
@@ -34,18 +34,15 @@ public class Menu {
             }
         } while ((opcaoDesejada != 1) || (opcaoDesejada != 2) || (opcaoDesejada != 3));
     }
-    
+
     private static void cadastrarAluno() {
         input.nextLine();
         String cpf = LeituraInformacoes.lerCpfAluno(true);
         input.nextLine();
-        System.out.println("Informe o nome completo do aluno: ");
-        String nome = input.nextLine();
-        System.out.println("Informe a idade do Aluno: ");
-        short idade = input.nextShort();
+        String nome = LeituraInformacoes.lerString("Informe o nome Completo do Aluno: ");
+        short idade = LeituraInformacoes.lerInteiro("Informe a idade do Aluno: ");
         input.nextLine();
-        System.out.println("Este aluno, aceita trocar a aula ?\n1- Sim \n2- Não: ");
-        short opcao = input.nextShort();
+        short opcao = LeituraInformacoes.lerInteiro("Este aluno, aceita trocar a aula ?\n1- Sim \n2- Não: ");
         input.nextLine();
         boolean aceitaTroca = true;
         if (opcao == 1) {
@@ -55,24 +52,21 @@ public class Menu {
         }
         AlunoController.addAluno(new Aluno(nome, idade, ValidaCPF.imprimeCPF(cpf), aceitaTroca));
     }
-    
+
     private static void cadastrarAulaAluno() {
         input.nextLine();
-        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);        
+        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);
         input.nextLine();
-        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);        
-        input.nextLine();        
-        System.out.println("Informe a quantidade de aulas: ");
-        byte quantidadeAulas = input.nextByte();
+        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);
         input.nextLine();
-        System.out.println("Informe a categoria desta Aula\n1- Carro \n2- Moto");
-        byte opcaoAula = input.nextByte();
+        short quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
+        input.nextLine();
+        short opcaoAula = LeituraInformacoes.lerInteiro("Informe a categoria desta Aula\n1- Carro \n2- Moto");
         input.nextLine();
         LocalDateTime dataAula = LeituraInformacoes.gerarDataAula();
-        
         if (opcaoAula == 1) {
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
-            
+
         } else if (opcaoAula == 2) {
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
         }
@@ -80,14 +74,13 @@ public class Menu {
         //LocalDateTime dataInicio, ModalidadeAula md, short quantidadeAulas
         //Instrutor instrutor, LocalDateTime dataInicio, ModalidadeAula md, Aluno aluno, short quantidadeAulas
     }
-    
+
     private static void cadastrarInstrutor() {
         input.nextLine();
-        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);       
-        System.out.println("Informe o nome completo do Instrutor(a): ");
-        input.nextLine();
-        String nomeCompleto = input.nextLine();
+        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
+        String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
+
         InstrutorController.addInstrutor(new Instrutor(nomeCompleto, ValidaCPF.imprimeCPF(cpfInstrutor)));
     }
-    
+
 }

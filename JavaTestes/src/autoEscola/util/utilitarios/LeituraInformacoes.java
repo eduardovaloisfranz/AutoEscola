@@ -4,8 +4,15 @@ import static autoEscola.controller.Menu.input;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class LeituraInformacoes {
+
+    private LeituraInformacoes() {
+
+    }
+
+    public static Scanner input = new Scanner(System.in);
 
     public static LocalDateTime gerarDataAula() {
 
@@ -31,10 +38,16 @@ public class LeituraInformacoes {
         String cpf = "";
         do {
             System.out.println("Informe o CPF do Aluno: ");
-            cpf = input.next();
-            if (ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(cpf) == proibirAlunoRepetido) {
-                System.out.println("Aluno JÁ ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpf));
-            }
+            cpf = input.nextLine();
+             if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpf) == true) {
+                if (proibirAlunoRepetido == true) {
+                    System.out.println("Aluno JÁ ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpf));
+                }
+            } else {
+                if (proibirAlunoRepetido == false) {
+                    System.out.println("Aluno NÃO ENCONTRA-SE CADASTRADO!\nCPF Inexistente no Banco de Dados: ");
+                }
+            }   
             if (ValidaCPF.isCPF(cpf) == false) {
                 System.out.println("\nCPF Inválido!\nInforme um CPF válido! ");
             }
@@ -47,16 +60,34 @@ public class LeituraInformacoes {
         String cpfInstrutor = "";
         do {
             System.out.println("Informe o CPF do Instrutor: ");
-            cpfInstrutor = input.next();
-            if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == proibirInstrutorRepetido) {
-                System.out.println("Instrutor NÃO ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpfInstrutor));
+            cpfInstrutor = input.nextLine();
 
-            }
+            if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == true) {
+                if (proibirInstrutorRepetido == true) {
+                    System.out.println("Instrutor JÁ ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpfInstrutor));
+                }
+            } else {
+                if (proibirInstrutorRepetido == false) {
+                    System.out.println("INSTRUTOR NÃO ENCONTRA-SE CADASTRADO!\nCPF Inexistente no Banco de Dados: ");
+                }
+            }            
             if (ValidaCPF.isCPF(cpfInstrutor) == false) {
                 System.out.println("\nCPF Inválido!\nInforme um CPF válido!");
             }
 
         } while (ValidaCPF.isCPF(cpfInstrutor) == false || ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor) == proibirInstrutorRepetido);
         return cpfInstrutor;
+    }
+
+    public static String lerString(String mensagem) {
+        System.out.println(mensagem);
+        String texto = input.nextLine();
+        return texto;
+    }
+
+    public static Short lerInteiro(String mensagem) {
+        System.out.println(mensagem);
+        short numero = input.nextShort();
+        return numero;
     }
 }
