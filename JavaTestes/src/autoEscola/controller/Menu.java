@@ -6,11 +6,8 @@ import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.utilitarios.LeituraInformacoes;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
-import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.util.InputMismatchException;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -52,16 +49,11 @@ public class Menu {
         AlunoController.addAluno(new Aluno(nome, idade, ValidaCPF.imprimeCPF(cpf), aceitaTroca));
     }
 
-    private static void cadastrarAulaAluno() {
-        input.nextLine();
-        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);
-        input.nextLine();
-        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);
-        input.nextLine();
-        short quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
-        input.nextLine();
-        short opcaoAula = LeituraInformacoes.lerInteiro("Informe a categoria desta Aula\n1- Carro \n2- Moto");
-        input.nextLine();
+    private static void cadastrarAulaAluno() {        
+        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);        
+        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);        
+        short quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");        
+        short opcaoAula = LeituraInformacoes.lerInteiro("Informe a categoria desta Aula\n1- Carro \n2- Moto");        
         LocalDateTime dataAula = LeituraInformacoes.gerarDataAula();
         if (opcaoAula == 1) {
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));

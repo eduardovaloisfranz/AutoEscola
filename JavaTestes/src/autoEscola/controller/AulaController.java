@@ -52,7 +52,7 @@ public class AulaController {
         PreparedStatement stmt = null;
         try{
             stmt = conexao.prepareStatement(SQL);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm:ss");            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");            
             String dataFormatada = aula.getDataAulaInicio().format(formatter);
             stmt.setString(1, dataFormatada);
             dataFormatada = aula.getDataAulaTermino().format(formatter);

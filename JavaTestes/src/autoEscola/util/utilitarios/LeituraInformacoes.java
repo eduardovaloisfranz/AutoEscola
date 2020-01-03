@@ -14,22 +14,12 @@ public class LeituraInformacoes {
 
     public static Scanner input = new Scanner(System.in);
 
-    public static LocalDateTime gerarDataAula() {
-
-        System.out.println("Informe o ano da aula: ");
-        int anoAula = input.nextInt();
-        input.nextLine();
-        System.out.println("Informe o mês da Aula: ");
-        byte mesAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe o dia da Aula: ");
-        byte diaAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Sera informado o horario da aula, primeiro sera solicitado a HORA e apos isso sera informado os MINUTOS\nInforme apenas a HORA da aula: ");
-        byte horaAula = input.nextByte();
-        input.nextLine();
-        System.out.println("Informe apenas o MINUTO da aula:  ");
-        byte minutoAula = input.nextByte();
+    public static LocalDateTime gerarDataAula() {        
+        int anoAula = LeituraInformacoes.lerInteiro("Informe o ano da Aula: ");                
+        short mesAula = LeituraInformacoes.lerInteiro("Informe o mês da aula");                
+        short diaAula = LeituraInformacoes.lerInteiro("Informe o dia da Aula");                
+        short horaAula = LeituraInformacoes.lerInteiro("Sera informado o horario da aula, primeiro sera solicitado a HORA e apos isso sera informado os MINUTOS\nInforme apenas a HORA da aula: ");                
+        short minutoAula = LeituraInformacoes.lerInteiro("Informe apenas o MINUTO da aula: ");
         return LocalDateTime.of(anoAula, mesAula, diaAula, horaAula, minutoAula, 0);
     }
 
