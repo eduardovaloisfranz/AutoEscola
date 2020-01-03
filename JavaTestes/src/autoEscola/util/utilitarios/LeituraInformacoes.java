@@ -39,7 +39,8 @@ public class LeituraInformacoes {
         do {
             System.out.println("Informe o CPF do Aluno: ");
             cpf = input.nextLine();
-             if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpf) == true) {
+             
+            if (ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(cpf) == true) {
                 if (proibirAlunoRepetido == true) {
                     System.out.println("Aluno JÁ ENCONTRA-SE CADASTRADO!\nCPF Existente no Banco de Dados: " + ValidaCPF.imprimeCPF(cpf));
                 }

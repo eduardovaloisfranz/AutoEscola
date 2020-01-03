@@ -37,13 +37,12 @@ public class Menu {
 
     private static void cadastrarAluno() {
         input.nextLine();
-        String cpf = LeituraInformacoes.lerCpfAluno(true);
-        input.nextLine();
+        String cpf = LeituraInformacoes.lerCpfAluno(true);        
         String nome = LeituraInformacoes.lerString("Informe o nome Completo do Aluno: ");
         short idade = LeituraInformacoes.lerInteiro("Informe a idade do Aluno: ");
-        input.nextLine();
+        
         short opcao = LeituraInformacoes.lerInteiro("Este aluno, aceita trocar a aula ?\n1- Sim \n2- Não: ");
-        input.nextLine();
+        
         boolean aceitaTroca = true;
         if (opcao == 1) {
             aceitaTroca = true;
