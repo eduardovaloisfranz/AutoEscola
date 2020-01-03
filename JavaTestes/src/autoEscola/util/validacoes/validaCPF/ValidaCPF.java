@@ -20,7 +20,9 @@ public class ValidaCPF {
                 || (CPF.length() != 11)) {
             return (false);
         }
-         
+        if(CPF.length() < 11){
+            return false;
+        }
 
         char dig10, dig11;
         int sm, i, r, num, peso;
@@ -77,8 +79,13 @@ public class ValidaCPF {
             CPF = CPF.replace(".", "");
             CPF = CPF.replace("-", "");            
         }
-        return (CPF.substring(0, 3) + "." + CPF.substring(3, 6) + "."
-                + CPF.substring(6, 9) + "-" + CPF.substring(9, 11));
+        if(isCPF(CPF) == true){
+               return (CPF.substring(0, 3) + "." + CPF.substring(3, 6) + "."
+                + CPF.substring(6, 9) + "-" + CPF.substring(9, 11)); 
+        }else{
+            return null;
+        }
+    
     }
     public static String retornaCPFSimples(String CPF){
         if((CPF.contains(".") || (CPF.contains("-")))){
