@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/Main/TheApp.java</file>
             <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/controller/Menu.java</file>
+            <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/util/utilitarios/LeituraInformacoes.java</file>
             <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/util/validacoes/validacoesDataBase/ValidacoesBancoDeDados.java</file>
-            <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/util/validacoes/validacoesGerais/ValidacaoGeral.java</file>
             <file>file:/C:/Users/duduf/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/controller/AulaController.java</file>
         </group>
     </open-files>

@@ -14,7 +14,8 @@ public class LeituraInformacoes {
 
     public static Scanner input = new Scanner(System.in);
 
-    public static LocalDateTime gerarDataAula() {        
+    public static LocalDateTime gerarDataAula(String cpfInstrutor) {        
+        
         int anoAula = LeituraInformacoes.lerInteiro("Informe o ano da Aula: ");                
         short mesAula = LeituraInformacoes.lerInteiro("Informe o mês da aula");                
         short diaAula = LeituraInformacoes.lerInteiro("Informe o dia da Aula");                
@@ -47,7 +48,8 @@ public class LeituraInformacoes {
         return cpf;
     }
 
-    public static String lerCpfInstrutor(boolean proibirInstrutorRepetido) {
+    public static String lerCpfInstrutor(boolean proibirInstrutorRepetido) {        
+        input.nextLine();
         String cpfInstrutor = "";
         do {
             System.out.println("Informe o CPF do Instrutor: ");

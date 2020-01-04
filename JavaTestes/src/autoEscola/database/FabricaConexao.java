@@ -18,9 +18,7 @@ public class FabricaConexao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return conexao;
-        
+        return conexao;   
 
     }
 }

@@ -5,6 +5,8 @@ import autoEscola.model.Aluno.Aluno;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AlunoController {
 
@@ -18,14 +20,18 @@ public class AlunoController {
             stmt.setInt(2, aluno.getIdade());
             stmt.setString(3, aluno.getCpf());
             stmt.setBoolean(4, aluno.getAceitaTroca());
-           
-            
             stmt.execute();
-            
-            stmt.close();
-            conexao.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

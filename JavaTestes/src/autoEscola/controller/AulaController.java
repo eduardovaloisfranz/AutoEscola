@@ -33,11 +33,18 @@ public class AulaController {
             ResultSet resultado = stmt.getGeneratedKeys();
             while(resultado.next()){
                 idAula = resultado.getInt(1);
-            }
-            stmt.close();
-            conexao.close();
+            }            
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
         
         
@@ -61,11 +68,19 @@ public class AulaController {
             stmt.setString(4, aula.getModalidadeAula().getModalidade());
             stmt.setString(5, cpfInstrutor);
             stmt.setString(6, cpfAluno);
-            stmt.execute();
-            
+            stmt.execute();          
             
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
                 
     }       

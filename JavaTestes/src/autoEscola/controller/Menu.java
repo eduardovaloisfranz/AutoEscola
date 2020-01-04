@@ -6,6 +6,7 @@ import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.utilitarios.LeituraInformacoes;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
 import java.time.LocalDateTime;
 
 import java.util.Scanner;
@@ -34,12 +35,12 @@ public class Menu {
 
     private static void cadastrarAluno() {
         input.nextLine();
-        String cpf = LeituraInformacoes.lerCpfAluno(true);        
+        String cpf = LeituraInformacoes.lerCpfAluno(true);
         String nome = LeituraInformacoes.lerString("Informe o nome Completo do Aluno: ");
         short idade = LeituraInformacoes.lerInteiro("Informe a idade do Aluno: ");
-        
+
         short opcao = LeituraInformacoes.lerInteiro("Este aluno, aceita trocar a aula ?\n1- Sim \n2- Não: ");
-        
+
         boolean aceitaTroca = true;
         if (opcao == 1) {
             aceitaTroca = true;
@@ -49,25 +50,37 @@ public class Menu {
         AlunoController.addAluno(new Aluno(nome, idade, ValidaCPF.imprimeCPF(cpf), aceitaTroca));
     }
 
-    private static void cadastrarAulaAluno() {        
-        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);        
-        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);        
-        short quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");        
-        short opcaoAula = LeituraInformacoes.lerInteiro("Informe a categoria desta Aula\n1- Carro \n2- Moto");        
-        LocalDateTime dataAula = LeituraInformacoes.gerarDataAula();
+    private static void cadastrarAulaAluno() {
+        String cpfAluno = LeituraInformacoes.lerCpfAluno(false);
+        String cpfInstrutor = "";
+        LocalDateTime dataAula = null;
+        short opcaoAula = LeituraInformacoes.lerInteiro("Informe a categoria desta Aula\n1- Carro \n2- Moto");
+        short quantidadeAulas = 0;
+        Aula aula = null;
         if (opcaoAula == 1) {
-            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
+            boolean aulaIsValida = true;
+            do {
+                cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);
+                quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
+                dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
+                aula = new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas);                
+                aulaIsValida = ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
+            } while (aulaIsValida == false);
+            AulaController.addAula((new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
 
         } else if (opcaoAula == 2) {
-            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
+            do {
+                aula = new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas);
+                ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
+            } while (ValidacoesGerais.validarAulaMoto(aula, cpfInstrutor) == false);
+            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));        
         }
 
         //LocalDateTime dataInicio, ModalidadeAula md, short quantidadeAulas
         //Instrutor instrutor, LocalDateTime dataInicio, ModalidadeAula md, Aluno aluno, short quantidadeAulas
     }
 
-    private static void cadastrarInstrutor() {
-        input.nextLine();
+    private static void cadastrarInstrutor() {        
         String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
         String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
 

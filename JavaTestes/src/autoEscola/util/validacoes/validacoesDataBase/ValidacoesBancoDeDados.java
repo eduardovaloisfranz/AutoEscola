@@ -15,26 +15,35 @@ public class ValidacoesBancoDeDados {
     public static boolean cpfExistenteDataBaseAluno(String CPF) {
         PreparedStatement stmt = null;
         Connection conexao = conexao = FabricaConexao.getConnection();
+        ResultSet resultado = null;
         if (ValidaCPF.isCPF(CPF) == true) {
             String SQL = "SELECT COUNT(cpf)'qtdCpf' FROM aluno WHERE cpf = ?;";
             try {
                 stmt = conexao.prepareStatement(SQL);
                 stmt.setString(1, ValidaCPF.imprimeCPF(CPF));
-                ResultSet resultado = stmt.executeQuery();
+                resultado = stmt.executeQuery();
                 short quantidadeCpf = 0;
                 while (resultado.next()) {
                     quantidadeCpf = resultado.getShort("qtdCpf");
-                }                
-                stmt.close();
-                conexao.close();
-                if(quantidadeCpf >= 1){
+                }
+                if (quantidadeCpf >= 1) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
 
             } catch (SQLException e) {
-                 e.printStackTrace();
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                        conexao.close();
+                        stmt.close();
+                        resultado.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
 
             return false;
@@ -50,7 +59,7 @@ public class ValidacoesBancoDeDados {
             String SQL = "SELECT COUNT(cpf) FROM instrutor WHERE cpf = ?";
             try {
                 stmt = conexao.prepareStatement(SQL);
-                stmt.setString(1, ValidaCPF.imprimeCPF(CPF));                
+                stmt.setString(1, ValidaCPF.imprimeCPF(CPF));
                 ResultSet resultado = stmt.executeQuery();
                 while (resultado.next()) {
                     if (resultado.getInt(1) >= 1) {
@@ -58,13 +67,20 @@ public class ValidacoesBancoDeDados {
                     } else {
                         return false;
                     }
-                }
-                stmt.close();
-                conexao.close();
+                }               
 
             } catch (SQLException e) {
                 e.printStackTrace();
+            }finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
+        }
 
             return false;
         } else {
@@ -77,33 +93,41 @@ public class ValidacoesBancoDeDados {
                 + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (a.modalidadeAula = 'Carro') AND (b.cpf = ?)";
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
+        ResultSet resultado = null;
         try {
             stmt = conexao.prepareStatement(SQL);
             stmt.setString(1, getDataFormatadaBanco(aula.getDataAulaInicio()));
             stmt.setString(2, cpfInstrutor);
-            ResultSet resultado = stmt.executeQuery();
+            resultado = stmt.executeQuery();
             short qtdAulasPorDataInformada = 0, qtdAulasPorInstrutorInformado = 0;
-            while(resultado.next()){
+            while (resultado.next()) {
                 qtdAulasPorDataInformada = resultado.getShort("qtdAulas");
                 qtdAulasPorInstrutorInformado = resultado.getShort("qtdInstrutor");
             }
-            resultado.close();
-            conexao.close();
-            stmt.close();
-            if((qtdAulasPorDataInformada >= 1) || (qtdAulasPorInstrutorInformado >= 1)){
+            if ((qtdAulasPorDataInformada >= 1) && (qtdAulasPorInstrutorInformado >= 1)) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     public static String getDataFormatadaBanco(LocalDateTime data) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return data.format(formatter);
     }
 }
