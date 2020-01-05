@@ -9,6 +9,8 @@ public class TheApp {
 
     public static void main(String[] args) {        
         //Menu.menu();        
-        AlunoController.exibirTodasAulasAluno();
+        //AlunoController.exibirTodasAulasAluno();
+        //AlunoController.exibirTodosOsAlunosAceitamTroca();
+        AlunoController.exibirTodosOsAlunosNaoAceitamTroca();
     }
 }

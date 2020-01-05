@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AlunoController {
 
@@ -36,6 +34,7 @@ public class AlunoController {
             }
         }
     }
+
     //exibir Todas AS AULAS dos alunos, exibir as aulas aluno Especifico, mostrar todos os alunos que Aceitam TROCA, mostrar todos os alunos que NAO ACEITAM TROCA
     public static void exibirTodasAulasAluno() {
         String sql = "SELECT a.nome'nomeAluno', a.idade'idadeAluno', a.cpf'cpfAluno', a.aceitaTroca'alunoAceitaTroca', "
@@ -46,11 +45,11 @@ public class AlunoController {
         Connection conexao = FabricaConexao.getConnection();
         Statement stmt = null;
         ResultSet resultado = null;
-        try{
+        try {
             stmt = conexao.createStatement();
             resultado = stmt.executeQuery(sql);
-            while(resultado.next()){
-                if(resultado.isFirst()){
+            while (resultado.next()) {
+                if (resultado.isFirst()) {
                     System.out.println("Será mostrado os seguintes valores\nNome do Aluno\tIdade do aluno\tCpf do Aluno\tSe o aluno aceita troca\tData inicio da Aula"
                             + "\tData termino aula\tQuantidade de Aulas\tModalidade da Aula\tNome do Instrutor\tCPF do instrutor");
                 }
@@ -65,23 +64,82 @@ public class AlunoController {
                 System.out.println("CPF Instrutor: " + resultado.getString("cpfInstrutor"));
                 System.out.println("Nome do Instrutor: " + resultado.getString("nomeInstrutor"));
                 System.out.println("-----------------------------------------------------------------------------");
-                
+
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Algo deu errado na inserção no Banco. Erro: " + e.getMessage());
-        }finally{
-            try{
-                if(conexao.isClosed() == false || stmt.isClosed() == false){
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
                     conexao.close();
                     stmt.close();
                     resultado.close();
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Problema database: " + e.getMessage());
             }
         }
-        
-        
+
+    }
+
+    public static void exibirTodosOsAlunosAceitamTroca() {
+        String sql = "SELECT nome FROM aluno WHERE aceitaTroca IS TRUE";
+        Statement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {
+                if (resultado.isFirst()) {
+                    System.out.println("Alunos que Aceitam ter aulas Trocadas: ");
+                }
+                System.out.println("Aluno nome: " + resultado.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+    }
+
+    public static void exibirTodosOsAlunosNaoAceitamTroca() {
+        String sql = "SELECT nome FROM aluno WHERE aceitaTroca IS FALSE";
+        Statement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {
+                if (resultado.isFirst()) {
+                    System.out.println("Alunos que não Aceitam ter aulas Trocadas: ");
+                }
+                System.out.println("Aluno nome: " + resultado.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
     }
 
 }
