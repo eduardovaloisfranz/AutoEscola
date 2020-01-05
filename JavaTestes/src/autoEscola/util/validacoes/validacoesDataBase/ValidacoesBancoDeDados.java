@@ -2,6 +2,7 @@ package autoEscola.util.validacoes.validacoesDataBase;
 
 import autoEscola.database.FabricaConexao;
 import autoEscola.model.Aula.Aula;
+import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,20 +68,20 @@ public class ValidacoesBancoDeDados {
                     } else {
                         return false;
                     }
-                }               
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();
-            }finally {
-            try {
-                if (conexao.isClosed() == false || stmt.isClosed() == false) {
-                    conexao.close();
-                    stmt.close();
+            } finally {
+                try {
+                    if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                        conexao.close();
+                        stmt.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
-        }
 
             return false;
         } else {
@@ -88,9 +89,13 @@ public class ValidacoesBancoDeDados {
         }
     }
 
-    public static boolean validarAulaCarro(Aula aula, String cpfInstrutor) {
-        String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulaInicio', COUNT(b.cpf)'qtdInstrutor', COUNT(a.dataAulaTermino)'qtdAulaTermino' FROM aula a"
-                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE ((? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) OR (?  BETWEEN a.dataAulaInicio AND a.dataAulaTermino)) AND (b.cpf = ?)";
+    public static boolean validarAula(Aula aula, String cpfInstrutor) {        //String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulaInicio', COUNT(b.cpf)'qtdInstrutor', COUNT(a.dataAulaTermino)'qtdAulaTermino' FROM aula a"
+        //      + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE ((? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) OR (?  BETWEEN a.dataAulaInicio AND a.dataAulaTermino)) AND (b.cpf = ?)";
+
+        String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulaInicio', COUNT(a.dataAulaTermino)'qtdAulaTermino', a.modalidadeAula'modalidadeAula' FROM aula a"
+                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE ((? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) "
+                + " OR (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND b.cpf = ?);";
+
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet resultado = null;
@@ -98,19 +103,31 @@ public class ValidacoesBancoDeDados {
             stmt = conexao.prepareStatement(SQL);
             stmt.setString(1, getDataFormatadaBanco(aula.getDataAulaInicio()));
             stmt.setString(2, getDataFormatadaBanco(aula.getDataAulaTermino()));
-            stmt.setString(3, cpfInstrutor);
+            stmt.setString(3, ValidaCPF.imprimeCPF(cpfInstrutor));
             resultado = stmt.executeQuery();
-            short qtdAulasPorDataInicioInformada = 0, qtdAulasPorInstrutorInformado = 0, qtdAulasPorDataTerminoInformada = 0;
+            short qtdAulasPorDataInicioInformada = 0, qtdAulasPorDataTerminoInformada = 0;
+            String modalidadeAula = "";
             while (resultado.next()) {
                 qtdAulasPorDataInicioInformada = resultado.getShort("qtdAulaInicio");
-                qtdAulasPorInstrutorInformado = resultado.getShort("qtdInstrutor");
                 qtdAulasPorDataTerminoInformada = resultado.getShort("qtdAulaTermino");
-            }            
-            if ((qtdAulasPorDataInicioInformada >= 1) && (qtdAulasPorInstrutorInformado >= 1) && (qtdAulasPorDataTerminoInformada >= 1)){
-                return false;
-            } else {
-                return true;
+                modalidadeAula = resultado.getString("modalidadeAula");
             }
+            if (modalidadeAula.equals(ModalidadeAula.CARRO.getModalidade())) {
+                if ((qtdAulasPorDataInicioInformada >= 1) && (qtdAulasPorDataTerminoInformada >= 1)) {
+                    return false;
+                }else {
+                    return true;
+                }
+            } else if(modalidadeAula.equals(ModalidadeAula.MOTO.getModalidade())) {
+                if ((qtdAulasPorDataInicioInformada >= 2) && (qtdAulasPorDataTerminoInformada >= 2)) {
+                    return false;
+                }else{
+                    return true;
+                }
+            }else {
+                return false;
+            }
+            
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,8 +141,9 @@ public class ValidacoesBancoDeDados {
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
+                return false;
             }
-        }
+        }        
     }
 
     public static String getDataFormatadaBanco(LocalDateTime data) {

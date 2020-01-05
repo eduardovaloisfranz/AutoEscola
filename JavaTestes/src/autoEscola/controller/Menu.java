@@ -65,7 +65,7 @@ public class Menu {
                 quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
                 dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
                 aula = new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas);
-                aulaIsValida = ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
+                aulaIsValida = ValidacoesGerais.validarAula(aula, cpfInstrutor);
                 if (!aulaIsValida) {
                     System.out.println("Esta Aula não pode ser realizada nesta data informada: \n" + ValidacoesBancoDeDados.getDataFormatadaBanco(dataAula) + "\nDevido a já existir uma Aula cadastrada para este aluno nesta data, por favor informe outra data!\nEfetuando o cadastro de aula novamente\n");
                 }
@@ -79,8 +79,8 @@ public class Menu {
                 quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
                 dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
                 aula = new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas);
-                ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
-            } while (ValidacoesGerais.validarAulaMoto(aula, cpfInstrutor) == false);
+                ValidacoesGerais.validarAula(aula, cpfInstrutor);
+            } while (ValidacoesGerais.validarAula(aula, cpfInstrutor) == false);
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
         }
 
