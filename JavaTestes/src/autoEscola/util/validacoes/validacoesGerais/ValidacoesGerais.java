@@ -9,6 +9,7 @@ public class ValidacoesGerais {
         return aulaIsValida;
     }
     public static boolean validarAulaMoto(Aula aula, String cpfInstrutor) {
-        return false;
+        boolean aulaIsValida = ValidacoesBancoDeDados.validarAulaMoto(aula, cpfInstrutor);
+        return aulaIsValida;
     }
 }

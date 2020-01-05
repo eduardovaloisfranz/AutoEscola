@@ -90,7 +90,7 @@ public class ValidacoesBancoDeDados {
 
     public static boolean validarAulaCarro(Aula aula, String cpfInstrutor) {
         String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulaInicio', COUNT(b.cpf)'qtdInstrutor', COUNT(a.dataAulaTermino)'qtdAulaTermino' FROM aula a"
-                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (?  BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (a.modalidadeAula = 'Carro') AND (b.cpf = ?)";
+                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) OR (?  BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (a.modalidadeAula = 'Carro') AND (b.cpf = ?)";
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet resultado = null;
@@ -131,5 +131,9 @@ public class ValidacoesBancoDeDados {
     public static String getDataFormatadaBanco(LocalDateTime data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return data.format(formatter);
+    }
+
+    public static boolean validarAulaMoto(Aula aula, String cpfInstrutor) {
+        return false;
     }
 }

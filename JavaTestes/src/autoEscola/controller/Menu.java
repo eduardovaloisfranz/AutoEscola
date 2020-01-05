@@ -64,28 +64,31 @@ public class Menu {
                 cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);
                 quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
                 dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
-                aula = new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas);                
+                aula = new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas);
                 aulaIsValida = ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
-                if(!aulaIsValida){
-                    System.out.println("Esta Aula não pode ser realizada nesta data informada: \n" + ValidacoesBancoDeDados.getDataFormatadaBanco(dataAula)+ "\nDevido a já existir uma Aula cadastrada para este aluno nesta data, por favor informe outra data!");
-                }                    
-                
+                if (!aulaIsValida) {
+                    System.out.println("Esta Aula não pode ser realizada nesta data informada: \n" + ValidacoesBancoDeDados.getDataFormatadaBanco(dataAula) + "\nDevido a já existir uma Aula cadastrada para este aluno nesta data, por favor informe outra data!\nEfetuando o cadastro de aula novamente\n");
+                }
+
             } while (aulaIsValida == false);
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
 
         } else if (opcaoAula == 2) {
             do {
+                cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(false);
+                quantidadeAulas = LeituraInformacoes.lerInteiro("Informe a quantidade de Aulas: ");
+                dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
                 aula = new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas);
                 ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
             } while (ValidacoesGerais.validarAulaMoto(aula, cpfInstrutor) == false);
-            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));        
+            AulaController.addAula((new Aula(dataAula, ModalidadeAula.MOTO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
         }
 
         //LocalDateTime dataInicio, ModalidadeAula md, short quantidadeAulas
         //Instrutor instrutor, LocalDateTime dataInicio, ModalidadeAula md, Aluno aluno, short quantidadeAulas
     }
 
-    private static void cadastrarInstrutor() {        
+    private static void cadastrarInstrutor() {
         String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
         String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
 
