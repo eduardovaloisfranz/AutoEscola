@@ -22,7 +22,8 @@ public class Menu {
             System.out.println("Ola, bem vindo a autoescola, o que deseja fazer?\nAqui estao algumas opções\n"
                     + "1- Cadastrar Aluno\n"
                     + "2 - Cadastrar Aula a algum aluno\n"
-                    + "3 - Cadastrar Instrutor");
+                    + "3 - Cadastrar Instrutor"
+                    + "4 - Mostrar alunos que aceitam ter aulas trocadas");
             opcaoDesejada = input.nextShort();
             if (opcaoDesejada == 1) {
                 cadastrarAluno();
@@ -31,7 +32,7 @@ public class Menu {
             } else if (opcaoDesejada == 3) {
                 cadastrarInstrutor();
             }
-        } while ((opcaoDesejada != 1) || (opcaoDesejada != 2) || (opcaoDesejada != 3));
+        } while ((opcaoDesejada != 1) || (opcaoDesejada != 2) || (opcaoDesejada != 3) || (opcaoDesejada !=4));
     }
 
     private static void cadastrarAluno() {
@@ -91,8 +92,11 @@ public class Menu {
     private static void cadastrarInstrutor() {
         String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
         String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
-
         InstrutorController.addInstrutor(new Instrutor(nomeCompleto, ValidaCPF.imprimeCPF(cpfInstrutor)));
+    }
+    
+    private static void mostrarAlunosQueAceitamTrocaDeAula(){
+        
     }
 
 }
