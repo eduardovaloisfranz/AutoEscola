@@ -6,6 +6,7 @@ import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.utilitarios.LeituraInformacoes;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
 import java.time.LocalDateTime;
 
@@ -65,6 +66,10 @@ public class Menu {
                 dataAula = LeituraInformacoes.gerarDataAula(cpfInstrutor);
                 aula = new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas);                
                 aulaIsValida = ValidacoesGerais.validarAulaCarro(aula, cpfInstrutor);
+                if(!aulaIsValida){
+                    System.out.println("Esta Aula não pode ser realizada nesta data informada: \n" + ValidacoesBancoDeDados.getDataFormatadaBanco(dataAula)+ "\nDevido a já existir uma Aula cadastrada para este aluno nesta data, por favor informe outra data!");
+                }                    
+                
             } while (aulaIsValida == false);
             AulaController.addAula((new Aula(dataAula, ModalidadeAula.CARRO, quantidadeAulas)), ValidaCPF.imprimeCPF(cpfInstrutor), ValidaCPF.imprimeCPF(cpfAluno));
 

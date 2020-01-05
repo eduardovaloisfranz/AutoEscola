@@ -89,25 +89,27 @@ public class ValidacoesBancoDeDados {
     }
 
     public static boolean validarAulaCarro(Aula aula, String cpfInstrutor) {
-        String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulas', COUNT(b.cpf)'qtdInstrutor' FROM aula a"
-                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (a.modalidadeAula = 'Carro') AND (b.cpf = ?)";
+        String SQL = "SELECT COUNT(a.dataAulaInicio)'qtdAulaInicio', COUNT(b.cpf)'qtdInstrutor', COUNT(a.dataAulaTermino)'qtdAulaTermino' FROM aula a"
+                + " JOIN instrutor B ON a.fk_instrutor = b.id WHERE (? BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (?  BETWEEN a.dataAulaInicio AND a.dataAulaTermino) AND (a.modalidadeAula = 'Carro') AND (b.cpf = ?)";
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet resultado = null;
         try {
             stmt = conexao.prepareStatement(SQL);
             stmt.setString(1, getDataFormatadaBanco(aula.getDataAulaInicio()));
-            stmt.setString(2, cpfInstrutor);
+            stmt.setString(2, getDataFormatadaBanco(aula.getDataAulaTermino()));
+            stmt.setString(3, cpfInstrutor);
             resultado = stmt.executeQuery();
-            short qtdAulasPorDataInformada = 0, qtdAulasPorInstrutorInformado = 0;
+            short qtdAulasPorDataInicioInformada = 0, qtdAulasPorInstrutorInformado = 0, qtdAulasPorDataTerminoInformada = 0;
             while (resultado.next()) {
-                qtdAulasPorDataInformada = resultado.getShort("qtdAulas");
+                qtdAulasPorDataInicioInformada = resultado.getShort("qtdAulaInicio");
                 qtdAulasPorInstrutorInformado = resultado.getShort("qtdInstrutor");
-            }
-            if ((qtdAulasPorDataInformada >= 1) && (qtdAulasPorInstrutorInformado >= 1)) {
-                return true;
-            } else {
+                qtdAulasPorDataTerminoInformada = resultado.getShort("qtdAulaTermino");
+            }            
+            if ((qtdAulasPorDataInicioInformada >= 1) && (qtdAulasPorInstrutorInformado >= 1) && (qtdAulasPorDataTerminoInformada >= 1)){
                 return false;
+            } else {
+                return true;
             }
 
         } catch (SQLException e) {

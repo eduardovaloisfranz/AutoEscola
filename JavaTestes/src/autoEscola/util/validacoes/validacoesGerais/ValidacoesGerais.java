@@ -5,13 +5,9 @@ import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 
 public class ValidacoesGerais {
     public static boolean validarAulaCarro(Aula aula, String cpfInstrutor){
-        boolean aulaIsValida = true;
-        do{
-            aulaIsValida = ValidacoesBancoDeDados.validarAulaCarro(aula, cpfInstrutor);
-        }while(aulaIsValida == true);
+        boolean aulaIsValida = ValidacoesBancoDeDados.validarAulaCarro(aula, cpfInstrutor);       
         return aulaIsValida;
     }
-
     public static boolean validarAulaMoto(Aula aula, String cpfInstrutor) {
         return false;
     }
