@@ -2,6 +2,7 @@ package autoEscola.controller;
 
 import autoEscola.database.FabricaConexao;
 import autoEscola.model.Aluno.Aluno;
+import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -141,5 +142,53 @@ public class AlunoController {
             }
         }
     }
+    
+    public static void exibirAulasAluno(String cpfAluno){
+        String sql = "SELECT a.nome'nomeAluno', a.idade'idadeAluno', a.cpf'cpfAluno', a.aceitaTroca'alunoAceitaTroca', "
+                + "b.dataAulaInicio'dataAulaInicio', b.dataAulaTermino'dataAulaTermino', b.quantidadeAula'quantidadeAulas', b.modalidadeAula'modalidadeAula',"
+                + "c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aluno a"
+                + " JOIN aula b ON b.fk_aluno = a.id"
+                + " JOIN instrutor c ON b.fk_instrutor = c.id"
+                + " WHERE a.id = (SELECT id FROM aluno WHERE cpf = ?) ;";
+        Connection conexao = FabricaConexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet resultado = null;
+        try {
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, ValidaCPF.imprimeCPF(cpfAluno));
+            resultado = stmt.executeQuery();            
+            while (resultado.next()) {
+                if (resultado.isFirst()) {
+                    System.out.println("Aulas do aluno");
+                    System.out.println("Nome do Aluno: " + resultado.getString("nomeAluno"));
+                    System.out.println("Idade Aluno: " + resultado.getShort("idadeAluno"));
+                    System.out.println("CPF do Aluno: " + resultado.getString("cpfAluno"));
+                    System.out.println("Se o aluno Aceita Troca: " + resultado.getBoolean("alunoAceitaTroca"));
+                }                                                        
+                System.out.println("\nData do Inicio da Aula: " + resultado.getString("dataAulaInicio"));
+                System.out.println("Data do Término da Aula: " + resultado.getString("dataAulaTermino"));
+                System.out.println("Quantidade de Aulas: " + resultado.getShort("quantidadeAulas"));
+                System.out.println("Modalidade da Aula: " + resultado.getString("modalidadeAula"));
+                System.out.println("CPF Instrutor: " + resultado.getString("cpfInstrutor"));
+                System.out.println("Nome do Instrutor: " + resultado.getString("nomeInstrutor"));
+                System.out.println("-----------------------------------------------------------------------------");
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Algo deu errado na inserção no Banco. Erro: " + e.getMessage());
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Problema database: " + e.getMessage());
+            }
+        }
+    }
+    
+    
 
 }

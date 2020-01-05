@@ -11,6 +11,7 @@ public class TheApp {
         //Menu.menu();        
         //AlunoController.exibirTodasAulasAluno();
         //AlunoController.exibirTodosOsAlunosAceitamTroca();
-        AlunoController.exibirTodosOsAlunosNaoAceitamTroca();
+        //AlunoController.exibirTodosOsAlunosNaoAceitamTroca();
+        AlunoController.exibirAulasAluno("10118916971");
     }
 }
