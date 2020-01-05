@@ -83,6 +83,54 @@ public class AlunoController {
 
     }
 
+     public static void exibirTodasAulasAlunoAceitamTroca() {
+        String sql = "SELECT a.nome'nomeAluno', a.idade'idadeAluno', a.cpf'cpfAluno', a.aceitaTroca'alunoAceitaTroca', "
+                + "b.dataAulaInicio'dataAulaInicio', b.dataAulaTermino'dataAulaTermino', b.quantidadeAula'quantidadeAulas', b.modalidadeAula'modalidadeAula',"
+                + "c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aluno a"
+                + " JOIN aula b ON b.fk_aluno = a.id"
+                + " JOIN instrutor c ON b.fk_instrutor = c.id"
+                + " WHERE a.aceitaTroca IS TRUE;";
+        Connection conexao = FabricaConexao.getConnection();
+        Statement stmt = null;
+        ResultSet resultado = null;
+        try {
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {
+                if (resultado.isFirst()) {
+                    System.out.println("Será mostrado os seguintes valores\nNome do Aluno\tIdade do aluno\tCpf do Aluno\tSe o aluno aceita troca\tData inicio da Aula"
+                            + "\tData termino aula\tQuantidade de Aulas\tModalidade da Aula\tNome do Instrutor\tCPF do instrutor");
+                }
+                System.out.println("Nome do Aluno: " + resultado.getString("nomeAluno"));
+                System.out.println("Idade Aluno: " + resultado.getShort("idadeAluno"));
+                System.out.println("CPF do Aluno: " + resultado.getString("cpfAluno"));
+                System.out.println("Se o aluno Aceita Troca: " + resultado.getBoolean("alunoAceitaTroca"));
+                System.out.println("Data do Inicio da Aula: " + resultado.getString("dataAulaInicio"));
+                System.out.println("Data do Término da Aula: " + resultado.getString("dataAulaTermino"));
+                System.out.println("Quantidade de Aulas: " + resultado.getShort("quantidadeAulas"));
+                System.out.println("Modalidade da Aula: " + resultado.getString("modalidadeAula"));
+                System.out.println("CPF Instrutor: " + resultado.getString("cpfInstrutor"));
+                System.out.println("Nome do Instrutor: " + resultado.getString("nomeInstrutor"));
+                System.out.println("-----------------------------------------------------------------------------");
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Algo deu errado na inserção no Banco. Erro: " + e.getMessage());
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Problema database: " + e.getMessage());
+            }
+        }
+
+    }
+    
+    
     public static void exibirTodosOsAlunosAceitamTroca() {
         String sql = "SELECT nome FROM aluno WHERE aceitaTroca IS TRUE";
         Statement stmt = null;
