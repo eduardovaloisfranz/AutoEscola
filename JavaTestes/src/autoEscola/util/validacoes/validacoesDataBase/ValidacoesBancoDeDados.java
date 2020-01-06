@@ -112,22 +112,26 @@ public class ValidacoesBancoDeDados {
                 qtdAulasPorDataTerminoInformada = resultado.getShort("qtdAulaTermino");
                 modalidadeAula = resultado.getString("modalidadeAula");
             }
-            if (modalidadeAula.equals(ModalidadeAula.CARRO.getModalidade())) {
-                if ((qtdAulasPorDataInicioInformada >= 1) && (qtdAulasPorDataTerminoInformada >= 1)) {
+            if (modalidadeAula != null) {
+                if (modalidadeAula.equals(ModalidadeAula.CARRO.getModalidade())) {
+                    if ((qtdAulasPorDataInicioInformada >= 1) && (qtdAulasPorDataTerminoInformada >= 1)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else if (modalidadeAula.equals(ModalidadeAula.MOTO.getModalidade())) {
+                    if ((qtdAulasPorDataInicioInformada >= 2) && (qtdAulasPorDataTerminoInformada >= 2)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
                     return false;
-                }else {
-                    return true;
                 }
-            } else if(modalidadeAula.equals(ModalidadeAula.MOTO.getModalidade())) {
-                if ((qtdAulasPorDataInicioInformada >= 2) && (qtdAulasPorDataTerminoInformada >= 2)) {
-                    return false;
-                }else{
-                    return true;
-                }
-            }else {
-                return false;
+            }else{
+                return true;
             }
-            
+                   
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,7 +147,7 @@ public class ValidacoesBancoDeDados {
                 ex.printStackTrace();
                 return false;
             }
-        }        
+        }
     }
 
     public static String getDataFormatadaBanco(LocalDateTime data) {

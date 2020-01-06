@@ -8,11 +8,11 @@ import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 public class TheApp {
 
     public static void main(String[] args) {        
-        //Menu.menu();        
+        Menu.menu();        
         //AlunoController.exibirTodasAulasAluno();
-        //AlunoController.exibirTodosOsAlunosAceitamTroca();
+       //AlunoController.exibirTodosOsAlunosAceitamTroca();
         //AlunoController.exibirTodosOsAlunosNaoAceitamTroca();
        // AlunoController.exibirAulasAluno("10118916971");
-       AlunoController.exibirTodasAulasAlunoAceitamTroca();
+       //AlunoController.exibirTodasAulasAlunoAceitamTroca();
     }
 }
