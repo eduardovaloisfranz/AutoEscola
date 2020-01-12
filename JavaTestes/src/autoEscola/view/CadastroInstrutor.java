@@ -5,7 +5,12 @@
  */
 package autoEscola.view;
 
+import autoEscola.controller.InstrutorController;
+import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
+import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +24,7 @@ public class CadastroInstrutor extends javax.swing.JFrame {
     public CadastroInstrutor() {
         initComponents();
     }
+    private static Boolean registroValido = null;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,16 +35,19 @@ public class CadastroInstrutor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        query1 = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("");
         jLabel1 = new javax.swing.JLabel();
-        txtNomeInstrutor = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        txtNomeInstrutor = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         txtCpfInstrutor = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nome Instrutor");
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setText("Cadastro de Instrutor");
+
+        jLabel2.setText("Nome instrutor: ");
 
         txtNomeInstrutor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -46,7 +55,7 @@ public class CadastroInstrutor extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("CPF Instrutor");
+        jLabel3.setText("CPF Instrutor");
 
         txtCpfInstrutor.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -55,8 +64,11 @@ public class CadastroInstrutor extends javax.swing.JFrame {
         });
 
         btnSalvar.setText("Salvar Registro");
-        btnSalvar.setToolTipText("Salvar Registro");
-        btnSalvar.setEnabled(false);
+        btnSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSalvarMouseEntered(evt);
+            }
+        });
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -70,60 +82,93 @@ public class CadastroInstrutor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGap(210, 210, 210)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCpfInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCpfInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(268, 268, 268)
+                        .addGap(245, 245, 245)
                         .addComponent(btnSalvar)))
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addContainerGap(213, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(59, 59, 59)
+                .addComponent(jLabel1)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtCpfInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                    .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtCpfInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(55, 55, 55)
                 .addComponent(btnSalvar)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
     private void txtCpfInstrutorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCpfInstrutorFocusLost
-        String CPFinstrutor = txtCpfInstrutor.getText();
-        if(ValidaCPF.isCPF(CPFinstrutor)){
-            btnSalvar.setEnabled(true);
+        // TODO add your handling code here:
+        String cpfInstrutor = txtCpfInstrutor.getText();
+        if (!ValidaCPF.isCPF(cpfInstrutor)) {
+            //btnSalvar.setEnabled(true);           
+            JOptionPane.showMessageDialog(null, "CPF ENCONTRA-SE INVALIDO", "ERRO NO CPF", JOptionPane.WARNING_MESSAGE);            
+        } else if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor)) {
+            JOptionPane.showMessageDialog(null, "CPF JÁ ENCONTRA-SE REGISTRADO", "CPF EXISTENTE", JOptionPane.WARNING_MESSAGE);            
         }
         
     }//GEN-LAST:event_txtCpfInstrutorFocusLost
 
     private void txtNomeInstrutorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNomeInstrutorFocusLost
         String nomeInstrutor = txtNomeInstrutor.getText();
-        if(!nomeInstrutor.isEmpty()){
-            if(nomeInstrutor.length() < 50){
-                btnSalvar.setEnabled(true);
-            }
+        if (nomeInstrutor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nome encontra-se vazio, digite novamente", "NOME INVÁLIDO", JOptionPane.WARNING_MESSAGE);
+            
+        } else if (nomeInstrutor.length() > 30) {
+            JOptionPane.showMessageDialog(null, "Nome Invalido, digite novamente", "NOME INVÁLIDO", JOptionPane.WARNING_MESSAGE);
         }
+
     }//GEN-LAST:event_txtNomeInstrutorFocusLost
+
+    
+    
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+        String nomeInstrutor = txtNomeInstrutor.getText();
+        String cpfInstrutor = txtCpfInstrutor.getText();
+        if(!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)){
+            btnSalvar.setEnabled(false);
+        }else{
+            btnSalvar.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnSalvarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarMouseEntered
+        // TODO add your handling code here:
+        String nomeInstrutor = txtNomeInstrutor.getText();
+        String cpfInstrutor = txtCpfInstrutor.getText();
+        if(!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)){
+            btnSalvar.setEnabled(false);
+        }else{
+            btnSalvar.setEnabled(true);
+        }
+        
+        InstrutorController.addInstrutor(new Instrutor(nomeInstrutor, cpfInstrutor));
+    }//GEN-LAST:event_btnSalvarMouseEntered
 
     /**
      * @param args the command line arguments
@@ -164,7 +209,7 @@ public class CadastroInstrutor extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.persistence.Query query1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField txtCpfInstrutor;
     private javax.swing.JTextField txtNomeInstrutor;
     // End of variables declaration//GEN-END:variables
