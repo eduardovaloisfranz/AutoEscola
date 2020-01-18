@@ -10,6 +10,8 @@ import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,6 +43,7 @@ public class CadastroInstrutor extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtCpfInstrutor = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,17 +78,22 @@ public class CadastroInstrutor extends javax.swing.JFrame {
             }
         });
 
+        btnVoltar.setText("Voltar para o Menu");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
+                        .addGap(74, 74, 74)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -94,18 +102,24 @@ public class CadastroInstrutor extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addComponent(jLabel1)
+                        .addGap(113, 113, 113))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(245, 245, 245)
-                        .addComponent(btnSalvar)))
-                .addContainerGap(213, Short.MAX_VALUE))
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVoltar)))
+                .addGap(148, 148, 148))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNomeInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -113,9 +127,11 @@ public class CadastroInstrutor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtCpfInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addComponent(btnSalvar)
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnVoltar))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,8 +183,18 @@ public class CadastroInstrutor extends javax.swing.JFrame {
             btnSalvar.setEnabled(true);
         }
         
-        InstrutorController.addInstrutor(new Instrutor(nomeInstrutor, cpfInstrutor));
+        try {
+            InstrutorController.addInstrutor(new Instrutor(nomeInstrutor, cpfInstrutor));
+        } catch (Exception ex) {
+            this.btnSalvar.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Registro com informações incorretas", "REGISTRO COM DADOS INCONSCISTENTES", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnSalvarMouseEntered
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        this.setVisible(false);
+        new HomeAutoEscola().setVisible(true);
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,6 +233,7 @@ public class CadastroInstrutor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
