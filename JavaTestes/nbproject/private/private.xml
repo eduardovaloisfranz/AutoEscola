@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/view/CadastroInstrutor.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/controller/AulaController.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/util/validacoes/validacoesDataBase/ValidacoesBancoDeDados.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/view/HomeAutoEscola.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/view/CadastrarAluno.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/view/LoginAluno.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/model/Instrutor/Instrutor.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/Main/TheApp.java</file>
         </group>

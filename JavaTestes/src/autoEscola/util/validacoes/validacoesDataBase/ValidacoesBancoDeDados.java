@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ValidacoesBancoDeDados {
 
@@ -128,10 +130,9 @@ public class ValidacoesBancoDeDados {
                 } else {
                     return false;
                 }
-            }else{
+            } else {
                 return true;
             }
-                   
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,16 +155,54 @@ public class ValidacoesBancoDeDados {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return data.format(formatter);
     }
-    
-    public static boolean loginIsValido(String nome, String cpf){
-        if(!ValidaCPF.isCPF(cpf)){
-            return false;
-        }
-        else {
-            
-        }
-        
-    }
 
+    public static boolean loginIsValido(String nome, String cpf) {
+        if (!ValidaCPF.isCPF(cpf)) {
+            return false;
+        } else if (!cpfExistenteDataBaseAluno(cpf)) {
+            return false;
+        } else {
+            Connection conexao = null;
+            PreparedStatement stmt = null;
+            ResultSet resultado = null;
+            try {
+                conexao = FabricaConexao.getConnection();
+                String SQL = "SELECT COUNT(nome)'qtdAlunoNome', COUNT(cpf)'qtdAlunoCpf' FROM aluno"
+                        + " WHERE nome = ? AND cpf = ?;";
+                stmt = conexao.prepareStatement(SQL);
+                stmt.setString(1, nome);
+                stmt.setString(2, ValidaCPF.imprimeCPF(cpf));
+                
+                resultado = stmt.executeQuery();
+                byte qtdAlunoNome = 0, qtdAlunoCpf = 0;
+                while (resultado.next()) {
+                    qtdAlunoNome = resultado.getByte("qtdAlunoNome");
+                    qtdAlunoCpf = resultado.getByte("qtdAlunoCpf");
+                }
+
+                if (qtdAlunoNome == 0 && qtdAlunoCpf == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+            } catch (SQLException ex) {
+                System.out.println("Problema com login: " + ex.getMessage());
+            } finally {
+                try {
+                    if (!conexao.isClosed() || stmt.isClosed()) {
+                        conexao.close();
+                        stmt.close();
+                        resultado.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        }
+        return false;
+
+    }
 
 }
