@@ -154,8 +154,16 @@ public class ValidacoesBancoDeDados {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return data.format(formatter);
     }
-
-    public static boolean validarAulaMoto(Aula aula, String cpfInstrutor) {
-        return false;
+    
+    public static boolean loginIsValido(String nome, String cpf){
+        if(!ValidaCPF.isCPF(cpf)){
+            return false;
+        }
+        else {
+            
+        }
+        
     }
+
+
 }
