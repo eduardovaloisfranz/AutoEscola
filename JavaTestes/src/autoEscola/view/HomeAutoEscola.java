@@ -89,6 +89,8 @@ public class HomeAutoEscola extends javax.swing.JFrame {
 
     private void btnCadastrarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarAlunoActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        new CadastrarAluno().setVisible(true);
     }//GEN-LAST:event_btnCadastrarAlunoActionPerformed
 
     private void btnCadastrarInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarInstrutorActionPerformed

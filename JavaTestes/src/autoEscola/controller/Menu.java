@@ -11,6 +11,8 @@ import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
 import java.time.LocalDateTime;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Menu {
 
@@ -90,9 +92,13 @@ public class Menu {
     }
 
     private static void cadastrarInstrutor() {
-        String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
-        String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
-        InstrutorController.addInstrutor(new Instrutor(nomeCompleto, ValidaCPF.imprimeCPF(cpfInstrutor)));
+        try {
+            String cpfInstrutor = LeituraInformacoes.lerCpfInstrutor(true);
+            String nomeCompleto = LeituraInformacoes.lerString("Informe o nome completo do Instrutor(a): ");
+            InstrutorController.addInstrutor(new Instrutor(nomeCompleto, ValidaCPF.imprimeCPF(cpfInstrutor)));
+        } catch (Exception ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private static void mostrarAlunosQueAceitamTrocaDeAula(){
