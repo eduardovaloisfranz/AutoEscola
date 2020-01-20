@@ -45,6 +45,11 @@ public class HomeAutoEscola extends javax.swing.JFrame {
         });
 
         btnCadastrarAulaAluno.setText("Cadastrar Aula a Aluno");
+        btnCadastrarAulaAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarAulaAlunoActionPerformed(evt);
+            }
+        });
 
         btnCadastrarInstrutor.setText("Cadastrar Instrutor");
         btnCadastrarInstrutor.addActionListener(new java.awt.event.ActionListener() {
@@ -98,6 +103,12 @@ public class HomeAutoEscola extends javax.swing.JFrame {
         new CadastroInstrutor().setVisible(true);
     }//GEN-LAST:event_btnCadastrarInstrutorActionPerformed
 
+    private void btnCadastrarAulaAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarAulaAlunoActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(true);
+        new CadastrarAulaAluno().setVisible(true);
+    }//GEN-LAST:event_btnCadastrarAulaAlunoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -124,6 +135,7 @@ public class HomeAutoEscola extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HomeAutoEscola.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

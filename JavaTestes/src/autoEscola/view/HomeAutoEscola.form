@@ -79,6 +79,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cadastrar Aula a Aluno"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarAulaAlunoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCadastrarInstrutor">
       <Properties>

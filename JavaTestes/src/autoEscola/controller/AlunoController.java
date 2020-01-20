@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class AlunoController {
 
@@ -128,6 +129,65 @@ public class AlunoController {
             }
         }
 
+    }
+     
+    public static ArrayList<Aluno> obterListaAlunosDataBase(){
+        ArrayList<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT cpf FROM aluno";
+        Statement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {              
+               alunos.add(new Aluno(resultado.getString(1)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+        return alunos;
+    }
+    
+    public static String getNomeAlunoPorCpf(String cpf){
+        String nome = "";
+        String sql = "SELECT nome'nomeAluno' FROM aluno WHERE cpf = ?";
+        PreparedStatement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            resultado = stmt.executeQuery();
+            while (resultado.next()) {              
+               nome = resultado.getString("nomeAluno");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+        return nome;
     }
     
     

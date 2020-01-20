@@ -19,8 +19,10 @@ public class Aluno {
 
     public String getCpf() {
         return cpf;
+    }   
+    public Aluno(String cpf){
+        this.cpf = cpf;
     }
-
     
 
     public boolean getAceitaTroca() {
