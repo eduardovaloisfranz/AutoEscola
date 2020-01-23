@@ -1,5 +1,8 @@
 package autoEscola.view;
 
+import autoEscola.model.Aluno.Aluno;
+import autoEscola.util.utilitarios.UtilDesktop;
+
 /**
  *
  * @author casa
@@ -53,7 +56,7 @@ public class CadastrarAluno extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("CPF Instrutor:");
+        jLabel3.setText("CPF Aluno");
 
         btnVoltar.setText("Voltar para o Menu principal");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -63,6 +66,11 @@ public class CadastrarAluno extends javax.swing.JFrame {
         });
 
         btnSalvar.setText("Salvar registro");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Idade Aluno");
 
@@ -163,6 +171,24 @@ public class CadastrarAluno extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_txtNomeFocusLost
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+        try{
+            String nomeAluno = txtNome.getText();
+            byte idadeAluno = (byte) Integer.parseInt(txtIdade.getText());
+            String cpfAluno = txtCpf.getText();
+            //boolean aceitaTroca = rbAceitaTroca.isSelected();
+            
+        }
+            Aluno aluno = new Aluno(nomeAluno, idadeAluno, cpfAluno);
+                    
+           
+        }catch(Exception ex){
+            UtilDesktop.msgBox("Problema: " + ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments

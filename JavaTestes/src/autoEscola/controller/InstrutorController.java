@@ -4,7 +4,7 @@ package autoEscola.controller;
 import autoEscola.database.FabricaConexao;
 import autoEscola.model.Aluno.Aluno;
 import autoEscola.model.Instrutor.Instrutor;
-import com.mysql.jdbc.Statement;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
