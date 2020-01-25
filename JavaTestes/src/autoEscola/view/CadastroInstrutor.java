@@ -5,8 +5,10 @@
  */
 package autoEscola.view;
 
+import autoEscola.controller.AlunoController;
 import autoEscola.controller.InstrutorController;
 import autoEscola.model.Instrutor.Instrutor;
+import autoEscola.util.utilitarios.UtilDesktop;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
@@ -142,33 +144,32 @@ public class CadastroInstrutor extends javax.swing.JFrame {
         String cpfInstrutor = txtCpfInstrutor.getText();
         if (!ValidaCPF.isCPF(cpfInstrutor)) {
             //btnSalvar.setEnabled(true);           
-            JOptionPane.showMessageDialog(null, "CPF ENCONTRA-SE INVALIDO", "ERRO NO CPF", JOptionPane.WARNING_MESSAGE);            
+            JOptionPane.showMessageDialog(null, "CPF ENCONTRA-SE INVALIDO", "ERRO NO CPF", JOptionPane.WARNING_MESSAGE);
         } else if (ValidacoesBancoDeDados.cpfExistenteDataBaseInstrutor(cpfInstrutor)) {
-            JOptionPane.showMessageDialog(null, "CPF JÁ ENCONTRA-SE REGISTRADO", "CPF EXISTENTE", JOptionPane.WARNING_MESSAGE);            
+            JOptionPane.showMessageDialog(null, "CPF JÁ ENCONTRA-SE REGISTRADO", "CPF EXISTENTE", JOptionPane.WARNING_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_txtCpfInstrutorFocusLost
 
     private void txtNomeInstrutorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNomeInstrutorFocusLost
         String nomeInstrutor = txtNomeInstrutor.getText();
         if (nomeInstrutor.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nome encontra-se vazio, digite novamente", "NOME INVÁLIDO", JOptionPane.WARNING_MESSAGE);
-            
+
         } else if (nomeInstrutor.length() > 30) {
             JOptionPane.showMessageDialog(null, "Nome Invalido, digite novamente", "NOME INVÁLIDO", JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_txtNomeInstrutorFocusLost
 
-    
-    
+
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         String nomeInstrutor = txtNomeInstrutor.getText();
         String cpfInstrutor = txtCpfInstrutor.getText();
-        if(!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)){
+        if (!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)) {
             btnSalvar.setEnabled(false);
-        }else{
+        } else {
             btnSalvar.setEnabled(true);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -177,14 +178,23 @@ public class CadastroInstrutor extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nomeInstrutor = txtNomeInstrutor.getText();
         String cpfInstrutor = txtCpfInstrutor.getText();
-        if(!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)){
+        if (!ValidacoesGerais.instrutorIsValido(cpfInstrutor, nomeInstrutor)) {
             btnSalvar.setEnabled(false);
-        }else{
+        } else {
             btnSalvar.setEnabled(true);
         }
-        
+
         try {
-            InstrutorController.addInstrutor(new Instrutor(nomeInstrutor, cpfInstrutor));
+            Instrutor instrutor = new Instrutor(nomeInstrutor, cpfInstrutor);
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Você deseja salvar o registro:\n " + instrutor.toString(), "Aviso", dialogButton);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                InstrutorController.addInstrutor(instrutor);
+                UtilDesktop.msgBox("Registro Salvo com sucesso: " + instrutor.toString());
+            } else {
+                UtilDesktop.msgBox("Registro Não Salvo");
+            }
+            InstrutorController.addInstrutor(instrutor);
         } catch (Exception ex) {
             this.btnSalvar.setEnabled(false);
             JOptionPane.showMessageDialog(null, "Registro com informações incorretas", "REGISTRO COM DADOS INCONSCISTENTES", JOptionPane.WARNING_MESSAGE);

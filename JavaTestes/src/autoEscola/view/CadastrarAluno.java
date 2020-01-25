@@ -1,7 +1,11 @@
 package autoEscola.view;
 
+import autoEscola.controller.AlunoController;
 import autoEscola.model.Aluno.Aluno;
 import autoEscola.util.utilitarios.UtilDesktop;
+import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +18,8 @@ public class CadastrarAluno extends javax.swing.JFrame {
      */
     public CadastrarAluno() {
         initComponents();
+        grupBoxRadioButton.add(rbAceitaTroca);
+        grupBoxRadioButton.add(rbNaoAceitaTroca);
     }
 
     /**
@@ -25,6 +31,7 @@ public class CadastrarAluno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupBoxRadioButton = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
@@ -168,26 +175,37 @@ public class CadastrarAluno extends javax.swing.JFrame {
         String nome = txtNome.getText();
         if (nome.isEmpty() || nome.length() > 50) {
             btnSalvar.setEnabled(false);
-            
+        } else {
+            btnSalvar.setEnabled(true);
         }
     }//GEN-LAST:event_txtNomeFocusLost
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
-        try{
+
+        try {
             String nomeAluno = txtNome.getText();
             byte idadeAluno = (byte) Integer.parseInt(txtIdade.getText());
             String cpfAluno = txtCpf.getText();
-            //boolean aceitaTroca = rbAceitaTroca.isSelected();
-            
-        }
-            Aluno aluno = new Aluno(nomeAluno, idadeAluno, cpfAluno);
-                    
-           
-        }catch(Exception ex){
+            boolean aceitaTroca = rbAceitaTroca.isSelected() ? true : false;
+            if (!ValidacoesBancoDeDados.cpfExistenteDataBaseAluno(ValidaCPF.imprimeCPF(cpfAluno))) {
+                Aluno aluno = new Aluno(nomeAluno, idadeAluno, ValidaCPF.imprimeCPF(cpfAluno), aceitaTroca);
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Você deseja salvar o registro:\n " + aluno.toString(), "Aviso", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {                    
+                    AlunoController.addAluno(aluno);
+                    UtilDesktop.msgBox("Registro Salvo com sucesso: " + aluno.toString());
+                }else{
+                    UtilDesktop.msgBox("Registro Não Salvo");
+                }                
+            } else {
+                UtilDesktop.msgBox("Aluno Existente, tente novamente");
+            }
+
+        } catch (Exception ex) {
             UtilDesktop.msgBox("Problema: " + ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
@@ -228,6 +246,7 @@ public class CadastrarAluno extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.ButtonGroup grupBoxRadioButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
