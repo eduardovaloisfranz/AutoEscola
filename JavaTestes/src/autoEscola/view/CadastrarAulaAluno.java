@@ -6,12 +6,21 @@
 package autoEscola.view;
 
 import autoEscola.controller.AlunoController;
+import autoEscola.controller.AulaController;
 import autoEscola.controller.InstrutorController;
 import autoEscola.model.Aluno.Aluno;
+import autoEscola.model.Aula.Aula;
+import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
+import autoEscola.util.MetodosUteis.MetodosUteis;
+import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,9 +35,21 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
         initComponents();
         this.inserirAlunosComboBox();
         this.inserirInstrutoresComboBox();
-        this.exibirNomeAlunoSelecionado();
-        this.exibirNomeInstrutorSelecionado();
-        
+
+        //this.exibirNomeInstrutorSelecionado();
+        this.cbAlunosDB.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent arg0) {
+                lblNomeAluno.setText("O nome do aluno Selecionado é: ");
+                exibirNomeAlunoSelecionado();
+            }
+        });
+        this.cbInstrutoresDB.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent arg0) {
+                lblNomeInstrutor.setText("O nome do Instrutor Selecionado é: ");
+                exibirNomeInstrutorSelecionado();
+            }
+        });
+
     }
 
     /**
@@ -40,16 +61,24 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtDataInicioAula = new javax.swing.JFormattedTextField();
+        txtDataAulaInicio = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
         cbAlunosDB = new javax.swing.JComboBox<>();
         cbInstrutoresDB = new javax.swing.JComboBox<>();
         lblNomeAluno = new javax.swing.JLabel();
         lblNomeInstrutor = new javax.swing.JLabel();
+        btnVoltarMenuAutoEscola = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listQuantidadeAulas = new javax.swing.JList<>();
+        jLabel6 = new javax.swing.JLabel();
+        cbCategoria = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,9 +90,14 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
 
         jLabel4.setText("Informe o Inicio da Aula");
 
-        txtDataInicioAula.addActionListener(new java.awt.event.ActionListener() {
+        try {
+            txtDataAulaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/#### ##:##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtDataAulaInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDataInicioAulaActionPerformed(evt);
+                txtDataAulaInicioActionPerformed(evt);
             }
         });
 
@@ -85,6 +119,31 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
 
         lblNomeInstrutor.setText("O nome do Instrutor Selecionado é: ");
 
+        btnVoltarMenuAutoEscola.setText("Voltar menu AutoEscola");
+        btnVoltarMenuAutoEscola.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarMenuAutoEscolaActionPerformed(evt);
+            }
+        });
+
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        listQuantidadeAulas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Uma Aula", "Duas Aulas" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(listQuantidadeAulas);
+
+        jLabel6.setText("Categoria Aula");
+
+        cbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carro", "Moto" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,32 +151,43 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(127, 127, 127)
+                                .addComponent(jLabel1))
+                            .addComponent(jLabel3)
+                            .addComponent(lblNomeInstrutor)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDataAulaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(cbInstrutoresDB, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblNomeAluno)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(cbAlunosDB, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(btnVoltarMenuAutoEscola)
+                        .addGap(67, 67, 67)
+                        .addComponent(btnSalvar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(lblNomeInstrutor))
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDataInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(cbInstrutoresDB, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(50, 50, 50)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNomeAluno)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cbAlunosDB, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,21 +209,31 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDataInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addContainerGap(98, Short.MAX_VALUE))
+                    .addComponent(txtDataAulaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(99, 99, 99)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVoltarMenuAutoEscola)
+                    .addComponent(btnSalvar))
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDataInicioAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataInicioAulaActionPerformed
+    private void txtDataAulaInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataAulaInicioActionPerformed
         // TODO add your handling code here:
         String date = new SimpleDateFormat("MM/dd/yy  HH:mm").format(new Date());
 
-        txtDataInicioAula = new JFormattedTextField(date);
-    }//GEN-LAST:event_txtDataInicioAulaActionPerformed
+        txtDataAulaInicio = new JFormattedTextField(date);
+    }//GEN-LAST:event_txtDataAulaInicioActionPerformed
     private void inserirAlunosComboBox() {
         for (Aluno alunos : AlunoController.obterListaAlunosDataBase()) {
             cbAlunosDB.addItem(alunos.getCpf());
@@ -164,22 +244,60 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cbAlunosDBActionPerformed
 
-    private void inserirInstrutoresComboBox(){
-        for(Instrutor instrutores : InstrutorController.obterListaInstrutorDataBase()){
+    private void inserirInstrutoresComboBox() {
+        for (Instrutor instrutores : InstrutorController.obterListaInstrutorDataBase()) {
             cbInstrutoresDB.addItem(instrutores.getCpf());
         }
     }
-    
-    private void exibirNomeAlunoSelecionado(){
+
+    private void exibirNomeAlunoSelecionado() {
         lblNomeAluno.setText(lblNomeAluno.getText() + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()));
     }
-    private void exibirNomeInstrutorSelecionado(){
+
+    private void exibirNomeInstrutorSelecionado() {
         lblNomeInstrutor.setText(lblNomeInstrutor.getText() + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()));
     }
-    
+
     private void cbInstrutoresDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbInstrutoresDBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbInstrutoresDBActionPerformed
+
+    private void btnVoltarMenuAutoEscolaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarMenuAutoEscolaActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new HomeAutoEscola().setVisible(true);
+    }//GEN-LAST:event_btnVoltarMenuAutoEscolaActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+        //LocalDateTime dataAulaInicio, ModalidadeAula md, short quantidadeAulas
+        //cpf instrutor
+        LocalDateTime dataAulaInicio = MetodosUteis.getLocalDateTimeString(txtDataAulaInicio.getText());
+        byte qtdAula = 0;
+        if (listQuantidadeAulas.getSelectedValue() == "Uma Aula") {
+            qtdAula = 1;
+        } else {
+            qtdAula = 2;
+        }
+        ModalidadeAula md = null;
+        if (cbCategoria.getSelectedItem().toString() == "Carro") {
+            md = ModalidadeAula.CARRO;
+        } else {
+            md = ModalidadeAula.MOTO;
+        }
+        Aula aula = new Aula(dataAulaInicio, md, qtdAula);
+        if (ValidacoesGerais.validarAula(aula, (cbInstrutoresDB.getSelectedItem().toString()))) {
+            try {
+                AulaController.addAula(aula, cbInstrutoresDB.getSelectedItem().toString(), cbAlunosDB.getSelectedItem().toString());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Problema na inserção, contate o adminstrador: " + e.getMessage());
+            }
+            JOptionPane.showMessageDialog(null, "Registro Salvo Com Sucesso!");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, Cheque novamente os campos e tente novamente", "AULA INVALIDA", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,8 +325,7 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CadastrarAulaAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -218,15 +335,23 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltarMenuAutoEscola;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbAlunosDB;
+    private javax.swing.JComboBox<String> cbCategoria;
     private javax.swing.JComboBox<String> cbInstrutoresDB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNomeAluno;
     private javax.swing.JLabel lblNomeInstrutor;
-    private javax.swing.JFormattedTextField txtDataInicioAula;
+    private javax.swing.JList<String> listQuantidadeAulas;
+    private javax.swing.JFormattedTextField txtDataAulaInicio;
     // End of variables declaration//GEN-END:variables
 }

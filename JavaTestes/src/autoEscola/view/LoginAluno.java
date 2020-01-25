@@ -35,6 +35,7 @@ public class LoginAluno extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtCpfAluno = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
+        btnVoltarMenuPrincipal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,6 +49,13 @@ public class LoginAluno extends javax.swing.JFrame {
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
+            }
+        });
+
+        btnVoltarMenuPrincipal.setText("Voltar menu principal");
+        btnVoltarMenuPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarMenuPrincipalActionPerformed(evt);
             }
         });
 
@@ -74,7 +82,10 @@ public class LoginAluno extends javax.swing.JFrame {
                         .addGap(86, 86, 86))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnLogin)
-                        .addGap(154, 154, 154))))
+                        .addGap(154, 154, 154))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnVoltarMenuPrincipal)
+                        .addGap(107, 107, 107))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +102,9 @@ public class LoginAluno extends javax.swing.JFrame {
                     .addComponent(txtCpfAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLogin)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(btnVoltarMenuPrincipal)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -106,6 +119,12 @@ public class LoginAluno extends javax.swing.JFrame {
             new AulasAluno(nome, cpf).setVisible(true);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnVoltarMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarMenuPrincipalActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new HomeUsuario().setVisible(true);
+    }//GEN-LAST:event_btnVoltarMenuPrincipalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,6 +163,7 @@ public class LoginAluno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnVoltarMenuPrincipal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

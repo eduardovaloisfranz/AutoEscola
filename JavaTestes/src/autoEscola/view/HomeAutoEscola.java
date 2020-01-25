@@ -31,6 +31,7 @@ public class HomeAutoEscola extends javax.swing.JFrame {
         btnCadastrarAluno = new javax.swing.JButton();
         btnCadastrarAulaAluno = new javax.swing.JButton();
         btnCadastrarInstrutor = new javax.swing.JButton();
+        btnVoltarMenuPrincipal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +59,13 @@ public class HomeAutoEscola extends javax.swing.JFrame {
             }
         });
 
+        btnVoltarMenuPrincipal.setText("Voltar para o menu Principal");
+        btnVoltarMenuPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarMenuPrincipalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -72,8 +80,11 @@ public class HomeAutoEscola extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnCadastrarAulaAluno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnCadastrarAluno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCadastrarInstrutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(199, Short.MAX_VALUE))
+                            .addComponent(btnCadastrarInstrutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(btnVoltarMenuPrincipal)))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +97,9 @@ public class HomeAutoEscola extends javax.swing.JFrame {
                 .addComponent(btnCadastrarAulaAluno)
                 .addGap(46, 46, 46)
                 .addComponent(btnCadastrarInstrutor)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnVoltarMenuPrincipal)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
@@ -108,6 +121,12 @@ public class HomeAutoEscola extends javax.swing.JFrame {
         this.setVisible(true);
         new CadastrarAulaAluno().setVisible(true);
     }//GEN-LAST:event_btnCadastrarAulaAlunoActionPerformed
+
+    private void btnVoltarMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarMenuPrincipalActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new HomeUsuario().setVisible(true);
+    }//GEN-LAST:event_btnVoltarMenuPrincipalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +168,7 @@ public class HomeAutoEscola extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrarAluno;
     private javax.swing.JButton btnCadastrarAulaAluno;
     private javax.swing.JButton btnCadastrarInstrutor;
+    private javax.swing.JButton btnVoltarMenuPrincipal;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
