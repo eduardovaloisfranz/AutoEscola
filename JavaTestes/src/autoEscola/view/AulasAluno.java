@@ -5,6 +5,13 @@
  */
 package autoEscola.view;
 
+import autoEscola.controller.AulaController;
+import autoEscola.model.Aula.Aula;
+import autoEscola.util.utilitarios.ModeloTabela;
+import autoEscola.util.validacoes.validaCPF.ValidaCPF;
+import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+
 /**
  *
  * @author casa
@@ -12,16 +19,22 @@ package autoEscola.view;
 public class AulasAluno extends javax.swing.JFrame {
 
     private String nomeAluno, cpfAluno;
+
     /**
      * Creates new form AulasAluno
      */
     public AulasAluno() {
-        initComponents();        
+        initComponents();   
+        //System.out.println(AulaController.getAulasPorAluno("Eduardo Valois Franz", "101.189.169-71"));
     }
-    public AulasAluno(String nome, String cpf){
+
+    public AulasAluno(String nome, String cpf) {      
         this();
         this.nomeAluno = nome;
-        this.cpfAluno = cpf;
+        this.cpfAluno = ValidaCPF.imprimeCPF(cpf);
+        //System.out.println(AulaController.getAulasPorAluno(this.nomeAluno, this.cpfAluno));
+        LoadTable();
+       
     }
 
     /**
@@ -34,7 +47,7 @@ public class AulasAluno extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tblAulas = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -43,16 +56,16 @@ public class AulasAluno extends javax.swing.JFrame {
 
         tblAulas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(tblAulas);
+        jScrollPane2.setViewportView(tblAulas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,18 +77,18 @@ public class AulasAluno extends javax.swing.JFrame {
                         .addGap(151, 151, 151)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(116, Short.MAX_VALUE))
+                        .addGap(47, 47, 47)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -84,6 +97,37 @@ public class AulasAluno extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    public void LoadTable(){
+        ArrayList dados = new ArrayList<>();
+        
+        
+        String[] colunas = new String[]{"dataAulaInicio", "dataAulaTermino", "quantidadeAula", "modalidadeAula", "cpfAluno", "nomeAluno", "aceitaTroca" ,"nomeInstrutor"};
+        for(Aula aulasAluno : AulaController.getAulasPorAluno(this.nomeAluno, this.cpfAluno)){
+            dados.add(new Object[]{
+                    aulasAluno.getDataAulaInicio(),
+                    aulasAluno.getDataAulaTermino(),
+                    aulasAluno.getQuantidadeAulas(),
+                    aulasAluno.getModalidadeAula(),
+                    aulasAluno.getAluno().getCpf(),
+                    aulasAluno.getAluno().getNome(),
+                    aulasAluno.getAluno().getAceitaTroca(),
+                    aulasAluno.getInstrutor().getNome()
+            });
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        tblAulas.setModel(modelo);
+        
+        for(int i = 0; i < colunas.length; i++){
+            tblAulas.getColumnModel().getColumn(i).setPreferredWidth(80);
+            tblAulas.getColumnModel().getColumn(i).setResizable(true);
+        }
+        tblAulas.getTableHeader().setReorderingAllowed(false);
+        tblAulas.setAutoResizeMode(tblAulas.AUTO_RESIZE_OFF);
+        
+        tblAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);                           
+                
+        
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -118,7 +162,7 @@ public class AulasAluno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblAulas;
     // End of variables declaration//GEN-END:variables
 }

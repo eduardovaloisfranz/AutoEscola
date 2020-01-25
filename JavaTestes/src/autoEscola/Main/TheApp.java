@@ -14,7 +14,7 @@ public class TheApp {
         //Menu.menu();        
         
         //System.out.println(AlunoController.getAlunos().toString());
-        System.out.println(AulaController.getAulasPorAluno("Eduardo Valois Franz", "101.189.169-71"));
+        //System.out.println(AulaController.getAulasPorAluno("Eduardo Valois Franz", "101.189.169-71"));
         
 
         //CadastroInstrutor tela = new CadastroInstrutor
