@@ -1,4 +1,3 @@
-
 package autoEscola.controller;
 
 import autoEscola.database.FabricaConexao;
@@ -10,27 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InstrutorController {
-    public static Integer addInstrutor(Instrutor instrutor){
+
+    public static Integer addInstrutor(Instrutor instrutor) {
         Integer idInstrutor = null;
         Connection conexao = FabricaConexao.getConnection();
         String SQL = "INSERT INTO instrutor (nome, cpf) VALUES (?, ?)";
         PreparedStatement stmt = null;
         ResultSet resultado = null;
-        try{
+        try {
             stmt = conexao.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, instrutor.getNome());
             stmt.setString(2, instrutor.getCpf());
             stmt.executeUpdate();
             resultado = stmt.getGeneratedKeys();
-            while(resultado.next()){
+            while (resultado.next()) {
                 idInstrutor = resultado.getInt(1);
-            }            
-        }catch(SQLException e){
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (conexao.isClosed() == false || stmt.isClosed() == false) {
                     conexao.close();
@@ -43,8 +44,8 @@ public class InstrutorController {
         }
         return idInstrutor;
     }
-    
-    public static ArrayList<Instrutor> obterListaInstrutorDataBase(){
+
+    public static ArrayList<Instrutor> obterListaInstrutorDataBase() {
         ArrayList<Instrutor> instrutores = new ArrayList<>();
         String sql = "SELECT cpf'cpfInstrutor' FROM instrutor";
         java.sql.Statement stmt = null;
@@ -54,8 +55,8 @@ public class InstrutorController {
             conexao = FabricaConexao.getConnection();
             stmt = conexao.createStatement();
             resultado = stmt.executeQuery(sql);
-            while (resultado.next()) {              
-               instrutores.add(new Instrutor(resultado.getString("cpfInstrutor")));
+            while (resultado.next()) {
+                instrutores.add(new Instrutor(resultado.getString("cpfInstrutor")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,8 +73,8 @@ public class InstrutorController {
         }
         return instrutores;
     }
-    
-    public static String getInstrutorPorCpf(String cpf){
+
+    public static String getInstrutorPorCpf(String cpf) {
         String nome = "";
         String sql = "SELECT nome'nomeInstrutor' FROM instrutor WHERE cpf = ?";
         PreparedStatement stmt = null;
@@ -84,8 +85,8 @@ public class InstrutorController {
             stmt = conexao.prepareStatement(sql);
             stmt.setString(1, cpf);
             resultado = stmt.executeQuery();
-            while (resultado.next()) {              
-               nome = resultado.getString("nomeInstrutor");
+            while (resultado.next()) {
+                nome = resultado.getString("nomeInstrutor");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,4 +103,39 @@ public class InstrutorController {
         }
         return nome;
     }
+
+    public static ArrayList<Instrutor> getInstrutores() {
+        ArrayList<Instrutor> instrutores = new ArrayList<>();
+        String sql = "SELECT nome'nomeInstrutor' ,cpf'cpfInstrutor' FROM instrutor";
+        Statement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {
+                try {
+                    //String nome, int idade, String cpf, boolean aceitaTroca
+                    instrutores.add(new Instrutor(resultado.getString("nomeInstrutor"), resultado.getString("cpfInstrutor")));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+        return instrutores;
+    }
 }
+

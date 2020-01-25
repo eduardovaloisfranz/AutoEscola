@@ -131,6 +131,37 @@ public class AlunoController {
 
     }
      
+     public static ArrayList<Aluno> getAlunos(){
+        ArrayList<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT nome'nomeAluno', idade'idadeAluno' ,cpf'cpfAluno', aceitaTroca'aceitaTroca' FROM aluno";
+        Statement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.createStatement();
+            resultado = stmt.executeQuery(sql);
+            while (resultado.next()) {   
+                //String nome, int idade, String cpf, boolean aceitaTroca
+               alunos.add(new Aluno(resultado.getString("nomeAluno"), resultado.getByte("idadeAluno"), resultado.getString("cpfAluno"), resultado.getBoolean("aceitaTroca")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+        return alunos;
+     }
+     
+     
     public static ArrayList<Aluno> obterListaAlunosDataBase(){
         ArrayList<Aluno> alunos = new ArrayList<>();
         String sql = "SELECT cpf FROM aluno";

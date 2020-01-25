@@ -13,6 +13,7 @@ import autoEscola.model.Aula.Aula;
 import autoEscola.model.Aula.ModalidadeAula;
 import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.MetodosUteis.MetodosUteis;
+import autoEscola.util.utilitarios.UtilDesktop;
 import autoEscola.util.validacoes.validacoesGerais.ValidacoesGerais;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -288,7 +289,15 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
         Aula aula = new Aula(dataAulaInicio, md, qtdAula);
         if (ValidacoesGerais.validarAula(aula, (cbInstrutoresDB.getSelectedItem().toString()))) {
             try {
-                AulaController.addAula(aula, cbInstrutoresDB.getSelectedItem().toString(), cbAlunosDB.getSelectedItem().toString());
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Você deseja salvar o registro:\n " + aula.toString() + "Instrutor nome: " + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()) + " Para o Aluno:\n " + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()) , "Aviso", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    AulaController.addAula(aula, cbInstrutoresDB.getSelectedItem().toString(), cbAlunosDB.getSelectedItem().toString());                    
+                    UtilDesktop.msgBox("Registro Salvo com sucesso: " + aula.toString() + "Instrutor nome: " + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()) + " Para o Aluno:\n " + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()));
+                } else {
+                    UtilDesktop.msgBox("Registro Não Salvo");
+                }
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Problema na inserção, contate o adminstrador: " + e.getMessage());
             }

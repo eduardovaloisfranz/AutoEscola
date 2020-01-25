@@ -11,6 +11,15 @@ public class Aula {
     private LocalDateTime dataAulaTermino;
     private short quantidadeAulas;
     private Aluno aluno;
+    private static TipoSolicitacao tp;
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public static TipoSolicitacao getTp() {
+        return tp;
+    }
 
     public Instrutor getInstrutor() {
         return instrutor;
@@ -53,8 +62,26 @@ public class Aula {
         }
         
     }
+    
+    public Aula(LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas){
+        this.dataAulaInicio = dataAulaInicio;
+        this.dataAulaTermino = dataAulaTermino;
+        if(modalidadeAula.equals("Carro")){
+            this.modalidadeAula = ModalidadeAula.CARRO;
+        }else if(modalidadeAula.equals("Moto")){
+            this.modalidadeAula = ModalidadeAula.MOTO;
+        }
+        this.quantidadeAulas = quantidadeAulas;
+    }
 
-
+    public void setInstrutor(Instrutor instrutor){
+        this.instrutor = instrutor;
+    }
+    
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+            
     @Override
     public String toString() {
         return "Aula{" + "instrutor=" + instrutor + ", dataAulaInicio=" + dataAulaInicio + ", dataAulaTermino=" + dataAulaTermino + ", quantidadeAulas=" + quantidadeAulas + ", aluno=" + aluno + ", modalidadeAula=" + modalidadeAula + '}';
