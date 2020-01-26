@@ -8,14 +8,13 @@ package autoEscola.view;
 import autoEscola.controller.AulaController;
 import autoEscola.model.Aluno.Aluno;
 import autoEscola.model.Aula.Aula;
+import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
 import autoEscola.util.utilitarios.UtilDesktop;
-import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -31,23 +30,22 @@ public class AulasAluno extends javax.swing.JFrame {
      * Creates new form AulasAluno
      */
     public AulasAluno() {
-        initComponents();              
-        
+        initComponents();
+
     }
 
-    public AulasAluno(Aluno aluno) {      
+    public AulasAluno(Aluno aluno) {
         this();
-        this.aluno = aluno;        
-        this.lblTextoApresentacao.setText("Olá: " + this.aluno.getNome()  + " Cpf: " + this.aluno.getCpf());
+        this.aluno = aluno;
+        this.lblTextoApresentacao.setText("Olá: " + this.aluno.getNome() + " Cpf: " + this.aluno.getCpf());
         //System.out.println(AulaController.getAulasPorAluno(this.nomeAluno, this.cpfAluno));
-         if(!this.aluno.getAceitaTroca()){
+        if (!this.aluno.getAceitaTroca()) {
             tbPainel.setEnabledAt(1, false);
-        }else{
-             loadTableAulasParaTroca();
-         }
-        loadTableMinhasAulas();       
-        
-       
+        } else {
+            loadTableAulasParaTroca();
+        }
+        loadTableMinhasAulas();
+
     }
 
     /**
@@ -154,88 +152,108 @@ public class AulasAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void tblAulasParaTrocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAulasParaTrocaMouseClicked
-          // get the model from the jtable
-        ModeloTabela model = (ModeloTabela)tblAulasParaTroca.getModel();
+        // get the model from the jtable
+        ModeloTabela model = (ModeloTabela) tblAulasParaTroca.getModel();
 
-        // get the selected row index
-        int selectedRowIndex = tblAulasParaTroca.getSelectedRow();
-        UtilDesktop.msgBox("" + model.getValueAt(selectedRowIndex, 0).toString());
+        int ls = tblAulas.getSelectedRow();
+        ModeloTabela modelo = (ModeloTabela) tblAulasParaTroca.getModel();
+        int lst = tblAulasParaTroca.getSelectedRow();
+        //UtilDesktop.msgBox("" + model.getValueAt(selectedRowIndex, 0).toString());
+        //ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor
+        //LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id
+
+        if ((model.getValueAt(ls, 5).toString()).equals(modelo.getValueAt(lst, 5).toString())) {
+            UtilDesktop.msgBox("Aulas compativeis");
+
+        } else {
+            UtilDesktop.msgBox("Aulas imcompativeis");
+        }
+        Aula aulaOrigem = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 2).toString()),
+                model.getValueAt(ls, 4).toString(), (short) Integer.parseInt(model.getValueAt(ls, 3).toString()), (long) Integer.parseInt(model.getValueAt(ls, 0).toString()));
+
+        aulaOrigem.setAluno(this.aluno);
+        aulaOrigem.setInstrutor(new Instrutor(model.getValueAt(ls, 9).toString()));
+
+        Aula aulaDestino = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 2).toString()),
+                model.getValueAt(lst, 4).toString(), (short) Integer.parseInt(model.getValueAt(lst, 3).toString()), (long) Integer.parseInt(model.getValueAt(lst, 0).toString()));
+        aulaDestino.setAluno(this.aluno);
+        aulaOrigem.setInstrutor(new Instrutor(model.getValueAt(lst, 9).toString()));
+
+
     }//GEN-LAST:event_tblAulasParaTrocaMouseClicked
 
     /**
      * @param args the command line arguments
      */
-    public void loadTableAulasParaTroca(){
+    public void loadTableAulasParaTroca() {
         ArrayList dados = new ArrayList<>();
-        
-        
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
-        for(Aula aulasAluno : AulaController.getAulasAceitamTroca()){
-            if(!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())){
-            dados.add(new Object[]{
-                    aulasAluno.getId(),
-                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
-                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaTermino()),
-                    aulasAluno.getQuantidadeAulas(),
-                    aulasAluno.getModalidadeAula(),                    
-                    aulasAluno.getAluno().getNome(),
-                    aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",                    
-                    aulasAluno.getInstrutor().getNome()
-            });    
-            }
-            
-        }
-        ModeloTabela modelo = new ModeloTabela(dados, colunas);
-        tblAulasParaTroca.setModel(modelo);
-        
-        for(int i = 0; i < colunas.length; i++){
-            tblAulasParaTroca.getColumnModel().getColumn(i).setPreferredWidth(80);
-            tblAulasParaTroca.getColumnModel().getColumn(i).setResizable(true);
-        }
-        tblAulasParaTroca.getTableHeader().setReorderingAllowed(false);
-        tblAulasParaTroca.setAutoResizeMode(tblAulasParaTroca.AUTO_RESIZE_OFF);
-        
-        tblAulasParaTroca.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);                           
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
-        tblAulasParaTroca.setRowSorter(sorter);
-        tblAulasParaTroca.getSelectionModel().setSelectionInterval( 0, 0 );
-    }
-    
-    public void loadTableMinhasAulas(){
-        ArrayList dados = new ArrayList<>();
-        
-        
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
-        for(Aula aulasAluno : AulaController.getAulasPorAluno(this.aluno.getNome(), this.aluno.getCpf())){
-            dados.add(new Object[]{
+
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno", "Aceita Troca?", "Nome do Instrutor"};
+        for (Aula aulasAluno : AulaController.getAulasAceitamTroca()) {
+            if (!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())) {
+                dados.add(new Object[]{
                     aulasAluno.getId(),
                     MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
                     MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaTermino()),
                     aulasAluno.getQuantidadeAulas(),
                     aulasAluno.getModalidadeAula(),
-                    aulasAluno.getAluno().getCpf(),
                     aulasAluno.getAluno().getNome(),
-                    aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",                    
+                    aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",
                     aulasAluno.getInstrutor().getNome()
+                });
+            }
+
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        tblAulasParaTroca.setModel(modelo);
+
+        for (int i = 0; i < colunas.length; i++) {
+            tblAulasParaTroca.getColumnModel().getColumn(i).setPreferredWidth(80);
+            tblAulasParaTroca.getColumnModel().getColumn(i).setResizable(true);
+        }
+        tblAulasParaTroca.getTableHeader().setReorderingAllowed(false);
+        tblAulasParaTroca.setAutoResizeMode(tblAulasParaTroca.AUTO_RESIZE_OFF);
+
+        tblAulasParaTroca.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
+        tblAulasParaTroca.setRowSorter(sorter);
+        tblAulasParaTroca.getSelectionModel().setSelectionInterval(0, 0);
+    }
+
+    public void loadTableMinhasAulas() {
+        ArrayList dados = new ArrayList<>();
+
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?", "Nome do Instrutor"};
+        for (Aula aulasAluno : AulaController.getAulasPorAluno(this.aluno.getNome(), this.aluno.getCpf())) {
+            dados.add(new Object[]{
+                aulasAluno.getId(),
+                MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
+                MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaTermino()),
+                aulasAluno.getQuantidadeAulas(),
+                aulasAluno.getModalidadeAula(),
+                aulasAluno.getAluno().getCpf(),
+                aulasAluno.getAluno().getNome(),
+                aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",
+                aulasAluno.getInstrutor().getNome()
             });
         }
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
         tblAulas.setModel(modelo);
-        
-        for(int i = 0; i < colunas.length; i++){
+
+        for (int i = 0; i < colunas.length; i++) {
             tblAulas.getColumnModel().getColumn(i).setPreferredWidth(80);
             tblAulas.getColumnModel().getColumn(i).setResizable(true);
         }
         tblAulas.getTableHeader().setReorderingAllowed(false);
         tblAulas.setAutoResizeMode(tblAulas.AUTO_RESIZE_OFF);
-        
-        tblAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);                           
+
+        tblAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
         tblAulas.setRowSorter(sorter);
-        tblAulas.getSelectionModel().setSelectionInterval( 0, 0 );
-                
-        
+        tblAulas.getSelectionModel().setSelectionInterval(0, 0);
+
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

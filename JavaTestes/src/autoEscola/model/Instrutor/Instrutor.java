@@ -20,7 +20,7 @@ public class Instrutor {
         this.cpf = cpf;
     }
     
-    public Instrutor(String cpf){
+    public Instrutor(String nome){
         this.cpf = cpf;
     }
     public String getNome() {
