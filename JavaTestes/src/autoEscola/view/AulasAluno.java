@@ -162,12 +162,17 @@ public class AulasAluno extends javax.swing.JFrame {
         //ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor
         //LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id
 
-        if ((model.getValueAt(ls, 5).toString()).equals(modelo.getValueAt(lst, 5).toString())) {
-            UtilDesktop.msgBox("Aulas compativeis");
+        try {
+            if ((model.getValueAt(ls, 4).toString()).equals(modelo.getValueAt(lst, 4).toString())) {
+                UtilDesktop.msgBox("Aulas compativeis");
 
-        } else {
-            UtilDesktop.msgBox("Aulas imcompativeis");
+            } else {
+                UtilDesktop.msgBox("Aulas imcompativeis");
+            }
+        }catch(Exception e){
+            UtilDesktop.msgBox(e.getMessage());
         }
+
         Aula aulaOrigem = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 2).toString()),
                 model.getValueAt(ls, 4).toString(), (short) Integer.parseInt(model.getValueAt(ls, 3).toString()), (long) Integer.parseInt(model.getValueAt(ls, 0).toString()));
 
@@ -176,8 +181,9 @@ public class AulasAluno extends javax.swing.JFrame {
 
         Aula aulaDestino = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 2).toString()),
                 model.getValueAt(lst, 4).toString(), (short) Integer.parseInt(model.getValueAt(lst, 3).toString()), (long) Integer.parseInt(model.getValueAt(lst, 0).toString()));
-        aulaDestino.setAluno(this.aluno);
-        aulaOrigem.setInstrutor(new Instrutor(model.getValueAt(lst, 9).toString()));
+        Aluno alunoAulaDestino = new Aluno();
+        aulaDestino.setAluno(alunoAulaDestino);
+        aulaDestino.setInstrutor(new Instrutor(model.getValueAt(lst, 9).toString()));
 
 
     }//GEN-LAST:event_tblAulasParaTrocaMouseClicked

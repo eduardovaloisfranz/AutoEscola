@@ -5,9 +5,12 @@
  */
 package autoEscola.util.MetodosUteis;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  *
@@ -33,6 +36,9 @@ public class MetodosUteis {
              */
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             dateTime = LocalDateTime.parse(data, formatter);
+        } else if (dataIsValid("dd/MM/yyyy HH:mm:ss", data)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            dateTime = LocalDateTime.parse(data, formatter);
         } else {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             dateTime = LocalDateTime.parse(data, formatter);
@@ -48,10 +54,24 @@ public class MetodosUteis {
         String data = dt.format(formatter);
         return data;
     }
+
     public static String getDataFormatadaBanco(LocalDateTime data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return data.format(formatter);
     }
 
+    public static boolean dataIsValid(String format, String value) {
+        Date date = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            date = sdf.parse(value);
+            if (!value.equals(sdf.format(date))) {
+                date = null;
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        return date != null;
+    }
 
 }

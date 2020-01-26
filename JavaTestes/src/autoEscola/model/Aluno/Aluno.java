@@ -35,8 +35,7 @@ public class Aluno {
         this.nome = nome;
         this.idade = idade;
         this.cpf = cpf;       
-        this.aceitaTroca = aceitaTroca;
-       
+        this.aceitaTroca = aceitaTroca;       
     }
    
 
