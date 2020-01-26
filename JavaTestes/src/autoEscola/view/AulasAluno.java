@@ -10,10 +10,12 @@ import autoEscola.model.Aluno.Aluno;
 import autoEscola.model.Aula.Aula;
 import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
+import autoEscola.util.utilitarios.UtilDesktop;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -96,6 +98,11 @@ public class AulasAluno extends javax.swing.JFrame {
 
             }
         ));
+        tblAulasParaTroca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAulasParaTrocaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblAulasParaTroca);
 
         tbPainel.addTab("Aulas Disponívels para troca", jScrollPane1);
@@ -111,10 +118,6 @@ public class AulasAluno extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(114, 114, 114)
-                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 260, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(97, 97, 97)
                 .addComponent(jLabel1)
@@ -123,6 +126,10 @@ public class AulasAluno extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout)
                 .addGap(229, 229, 229))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 1099, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(249, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,9 +139,9 @@ public class AulasAluno extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(lblTextoApresentacao)
                     .addComponent(btnLogout))
-                .addGap(34, 34, 34)
-                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,6 +153,15 @@ public class AulasAluno extends javax.swing.JFrame {
         new LoginAluno().setVisible(true);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void tblAulasParaTrocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAulasParaTrocaMouseClicked
+          // get the model from the jtable
+        ModeloTabela model = (ModeloTabela)tblAulasParaTroca.getModel();
+
+        // get the selected row index
+        int selectedRowIndex = tblAulasParaTroca.getSelectedRow();
+        UtilDesktop.msgBox("" + model.getValueAt(selectedRowIndex, 0).toString());
+    }//GEN-LAST:event_tblAulasParaTrocaMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -153,8 +169,9 @@ public class AulasAluno extends javax.swing.JFrame {
         ArrayList dados = new ArrayList<>();
         
         
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
         for(Aula aulasAluno : AulaController.getAulasAceitamTroca()){
+            if(!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())){
             dados.add(new Object[]{
                     aulasAluno.getId(),
                     MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
@@ -164,7 +181,9 @@ public class AulasAluno extends javax.swing.JFrame {
                     aulasAluno.getAluno().getNome(),
                     aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",                    
                     aulasAluno.getInstrutor().getNome()
-            });
+            });    
+            }
+            
         }
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
         tblAulasParaTroca.setModel(modelo);
