@@ -6,11 +6,16 @@
 package autoEscola.view;
 
 import autoEscola.controller.AulaController;
+import autoEscola.model.Aluno.Aluno;
 import autoEscola.model.Aula.Aula;
+import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
 import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -18,22 +23,28 @@ import javax.swing.ListSelectionModel;
  */
 public class AulasAluno extends javax.swing.JFrame {
 
-    private String nomeAluno, cpfAluno;
+    private Aluno aluno;
 
     /**
      * Creates new form AulasAluno
      */
     public AulasAluno() {
-        initComponents();   
-        //System.out.println(AulaController.getAulasPorAluno("Eduardo Valois Franz", "101.189.169-71"));
+        initComponents();              
+        
     }
 
-    public AulasAluno(String nome, String cpf) {      
+    public AulasAluno(Aluno aluno) {      
         this();
-        this.nomeAluno = nome;
-        this.cpfAluno = ValidaCPF.imprimeCPF(cpf);
+        this.aluno = aluno;        
+        this.lblTextoApresentacao.setText("Olá: " + this.aluno.getNome()  + " Cpf: " + this.aluno.getCpf());
         //System.out.println(AulaController.getAulasPorAluno(this.nomeAluno, this.cpfAluno));
-        LoadTable();
+         if(!this.aluno.getAceitaTroca()){
+            tbPainel.setEnabledAt(1, false);
+        }else{
+             loadTableAulasParaTroca();
+         }
+        loadTableMinhasAulas();       
+        
        
     }
 
@@ -47,8 +58,13 @@ public class AulasAluno extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        lblTextoApresentacao = new javax.swing.JLabel();
+        tbPainel = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAulas = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblAulasParaTroca = new javax.swing.JTable();
+        btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,50 +83,120 @@ public class AulasAluno extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblAulas);
 
+        tbPainel.addTab("Minhas Aulas", jScrollPane2);
+
+        tblAulasParaTroca.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblAulasParaTroca);
+
+        tbPainel.addTab("Aulas Disponívels para troca", jScrollPane1);
+
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 260, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addGap(97, 97, 97)
+                .addComponent(jLabel1)
+                .addGap(38, 38, 38)
+                .addComponent(lblTextoApresentacao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogout)
+                .addGap(229, 229, 229))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(lblTextoApresentacao)
+                    .addComponent(btnLogout))
+                .addGap(34, 34, 34)
+                .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        this.aluno = null;
+        this.setVisible(false);
+        new LoginAluno().setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public void LoadTable(){
+    public void loadTableAulasParaTroca(){
         ArrayList dados = new ArrayList<>();
         
         
-        String[] colunas = new String[]{"dataAulaInicio", "dataAulaTermino", "quantidadeAula", "modalidadeAula", "cpfAluno", "nomeAluno", "aceitaTroca" ,"nomeInstrutor"};
-        for(Aula aulasAluno : AulaController.getAulasPorAluno(this.nomeAluno, this.cpfAluno)){
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
+        for(Aula aulasAluno : AulaController.getAulasAceitamTroca()){
             dados.add(new Object[]{
-                    aulasAluno.getDataAulaInicio(),
-                    aulasAluno.getDataAulaTermino(),
+                    aulasAluno.getId(),
+                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
+                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaTermino()),
+                    aulasAluno.getQuantidadeAulas(),
+                    aulasAluno.getModalidadeAula(),                    
+                    aulasAluno.getAluno().getNome(),
+                    aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",                    
+                    aulasAluno.getInstrutor().getNome()
+            });
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        tblAulasParaTroca.setModel(modelo);
+        
+        for(int i = 0; i < colunas.length; i++){
+            tblAulasParaTroca.getColumnModel().getColumn(i).setPreferredWidth(80);
+            tblAulasParaTroca.getColumnModel().getColumn(i).setResizable(true);
+        }
+        tblAulasParaTroca.getTableHeader().setReorderingAllowed(false);
+        tblAulasParaTroca.setAutoResizeMode(tblAulasParaTroca.AUTO_RESIZE_OFF);
+        
+        tblAulasParaTroca.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);                           
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
+        tblAulasParaTroca.setRowSorter(sorter);
+        tblAulasParaTroca.getSelectionModel().setSelectionInterval( 0, 0 );
+    }
+    
+    public void loadTableMinhasAulas(){
+        ArrayList dados = new ArrayList<>();
+        
+        
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor"};
+        for(Aula aulasAluno : AulaController.getAulasPorAluno(this.aluno.getNome(), this.aluno.getCpf())){
+            dados.add(new Object[]{
+                    aulasAluno.getId(),
+                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),
+                    MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaTermino()),
                     aulasAluno.getQuantidadeAulas(),
                     aulasAluno.getModalidadeAula(),
                     aulasAluno.getAluno().getCpf(),
                     aulasAluno.getAluno().getNome(),
-                    aulasAluno.getAluno().getAceitaTroca(),
+                    aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",                    
                     aulasAluno.getInstrutor().getNome()
             });
         }
@@ -125,6 +211,9 @@ public class AulasAluno extends javax.swing.JFrame {
         tblAulas.setAutoResizeMode(tblAulas.AUTO_RESIZE_OFF);
         
         tblAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);                           
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
+        tblAulas.setRowSorter(sorter);
+        tblAulas.getSelectionModel().setSelectionInterval( 0, 0 );
                 
         
     }
@@ -161,8 +250,13 @@ public class AulasAluno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblTextoApresentacao;
+    private javax.swing.JTabbedPane tbPainel;
     private javax.swing.JTable tblAulas;
+    private javax.swing.JTable tblAulasParaTroca;
     // End of variables declaration//GEN-END:variables
 }

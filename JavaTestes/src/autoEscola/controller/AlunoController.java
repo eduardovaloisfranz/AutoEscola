@@ -220,7 +220,39 @@ public class AlunoController {
         }
         return nome;
     }
-    
+    public static Aluno getAlunoByCPF(String cpf){
+        Aluno aluno = null;
+        String sql = "SELECT nome'nomeAluno', idade'idadeAluno', aceitaTroca'aceitaTroca' FROM aluno WHERE cpf = ?";
+        PreparedStatement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            resultado = stmt.executeQuery();
+            while (resultado.next()) {              
+               String nomeAluno = resultado.getString("nomeAluno");
+               byte idadeAluno = resultado.getByte("idadeAluno");
+               boolean aceitaTroca = resultado.getBoolean("aceitaTroca");
+               aluno = new Aluno(nomeAluno, idadeAluno, cpf, aceitaTroca);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conexao.isClosed() == false || stmt.isClosed() == false) {
+                    conexao.close();
+                    stmt.close();
+                    resultado.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro em fechar a conexao: " + e.getMessage());
+            }
+        }
+        return aluno;
+    }
     
     public static void exibirTodosOsAlunosAceitamTroca() {
         String sql = "SELECT nome FROM aluno WHERE aceitaTroca IS TRUE";

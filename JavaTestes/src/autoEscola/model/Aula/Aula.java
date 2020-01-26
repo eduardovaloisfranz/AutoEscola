@@ -12,6 +12,7 @@ public class Aula {
     private short quantidadeAulas;
     private Aluno aluno;
     private static TipoSolicitacao tp;
+    private long id;
 
     public Aluno getAluno() {
         return aluno;
@@ -63,7 +64,8 @@ public class Aula {
         
     }
     
-    public Aula(LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas){
+    public Aula(LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id){
+        this.id = id;
         this.dataAulaInicio = dataAulaInicio;
         this.dataAulaTermino = dataAulaTermino;
         if(modalidadeAula.equals("Carro")){
@@ -72,6 +74,10 @@ public class Aula {
             this.modalidadeAula = ModalidadeAula.MOTO;
         }
         this.quantidadeAulas = quantidadeAulas;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setInstrutor(Instrutor instrutor){

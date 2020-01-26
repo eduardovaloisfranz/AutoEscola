@@ -48,7 +48,7 @@ public class InstrutorController {
     public static ArrayList<Instrutor> obterListaInstrutorDataBase() {
         ArrayList<Instrutor> instrutores = new ArrayList<>();
         String sql = "SELECT cpf'cpfInstrutor' FROM instrutor";
-        java.sql.Statement stmt = null;
+        Statement stmt = null;
         Connection conexao = null;
         ResultSet resultado = null;
         try {

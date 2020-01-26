@@ -100,6 +100,60 @@ public class AulaController {
         
         return aulas;
     }
+    
+    public static ArrayList<Aula> getAulasAceitamTroca(){
+        ArrayList<Aula> aulas = new ArrayList<>();
+        PreparedStatement stmt = null;
+        Connection conexao = null;
+        ResultSet resultado = null;
+        try {
+            conexao = FabricaConexao.getConnection();
+            String sql = "SELECT a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
+                    + " JOIN aluno b ON b.id = a.fk_aluno"
+                    + " JOIN instrutor c ON a.fk_instrutor = c.id"
+                    + " WHERE b.aceitaTroca IS TRUE AND a.dataAulaInicio > ?";
+            //stmt = conexao.createStatement();
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, MetodosUteis.getDataFormatadaBanco(LocalDateTime.now().plusDays(1)));
+            resultado = stmt.executeQuery();
+            while (resultado.next()) {
+                //LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas)
+                LocalDateTime dataAulaInicio = MetodosUteis.getLocalDateTimeString(resultado.getString("dataAulaInicio"));
+                LocalDateTime dataAulaTermino = MetodosUteis.getLocalDateTimeString(resultado.getString("dataAulaTermino"));
+                String modalidadeAula = resultado.getString("modalidadeAula");
+                short quantidadeAula = resultado.getShort("quantidadeAula");
+                long idAula = resultado.getLong("idAula");
+                //String nome, int idade, String cpf, boolean aceitaTroca
+                Aluno aluno = new Aluno(resultado.getString("nomeAluno"), resultado.getByte("idadeAluno"), resultado.getString("cpfAluno"), resultado.getBoolean("alunoAceitaTroca"));
+                Instrutor instrutor = null;
+                try {
+                    instrutor = new Instrutor(resultado.getString("nomeInstrutor"), resultado.getString("cpfInstrutor"));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula);
+                aula.setAluno(aluno);
+                aula.setInstrutor(instrutor);
+                aulas.add(aula);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            
+        } finally {
+            try {
+                if (!(conexao.isClosed()) || !(stmt.isClosed())) {
+                    conexao.close();
+                    stmt.close();
+                }
+
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        return aulas;
+    }
 
     public static ArrayList<Aula> getAulas() {        
         ArrayList<Aula> aulas = new ArrayList<>();
@@ -108,7 +162,7 @@ public class AulaController {
         ResultSet resultado = null;
         try {
             conexao = FabricaConexao.getConnection();
-            String sql = "SELECT a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
+            String sql = "SELECT a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
                     + " JOIN aluno b ON b.id = a.fk_aluno"
                     + " JOIN instrutor c ON a.fk_instrutor = c.id;";
             stmt = conexao.createStatement();
@@ -119,6 +173,7 @@ public class AulaController {
                 LocalDateTime dataAulaTermino = MetodosUteis.getLocalDateTimeString(resultado.getString("dataAulaTermino"));
                 String modalidadeAula = resultado.getString("modalidadeAula");
                 short quantidadeAula = resultado.getShort("quantidadeAula");
+                long idAula = resultado.getLong("idAula");
                 //String nome, int idade, String cpf, boolean aceitaTroca
                 Aluno aluno = new Aluno(resultado.getString("nomeAluno"), resultado.getByte("idadeAluno"), resultado.getString("cpfAluno"), resultado.getBoolean("alunoAceitaTroca"));
                 Instrutor instrutor = null;
@@ -127,7 +182,7 @@ public class AulaController {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula);
+                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula);
                 aula.setAluno(aluno);
                 aula.setInstrutor(instrutor);
                 aulas.add(aula);

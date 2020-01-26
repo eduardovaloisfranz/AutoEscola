@@ -5,6 +5,10 @@
  */
 package autoEscola.view;
 
+import autoEscola.controller.AlunoController;
+import autoEscola.model.Aluno.Aluno;
+import autoEscola.util.utilitarios.UtilDesktop;
+import autoEscola.util.validacoes.validaCPF.ValidaCPF;
 import autoEscola.util.validacoes.validacoesDataBase.ValidacoesBancoDeDados;
 
 /**
@@ -115,8 +119,11 @@ public class LoginAluno extends javax.swing.JFrame {
         String nome = txtNomeAluno.getText();
         String cpf = txtCpfAluno.getText();
         if(ValidacoesBancoDeDados.loginIsValido(nome, cpf)){
-            this.setVisible(false);
-            new AulasAluno(nome, cpf).setVisible(true);
+            this.setVisible(false);            
+            Aluno aluno = AlunoController.getAlunoByCPF(ValidaCPF.imprimeCPF(cpf));
+            new AulasAluno(aluno).setVisible(true);
+        }else{
+            UtilDesktop.msgBox("Usuário inexistente!");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
