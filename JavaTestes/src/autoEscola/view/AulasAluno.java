@@ -169,21 +169,9 @@ public class AulasAluno extends javax.swing.JFrame {
             } else {
                 UtilDesktop.msgBox("Aulas imcompativeis");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             UtilDesktop.msgBox(e.getMessage());
         }
-
-        Aula aulaOrigem = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(ls, 2).toString()),
-                model.getValueAt(ls, 4).toString(), (short) Integer.parseInt(model.getValueAt(ls, 3).toString()), (long) Integer.parseInt(model.getValueAt(ls, 0).toString()));
-
-        aulaOrigem.setAluno(this.aluno);
-        aulaOrigem.setInstrutor(new Instrutor(model.getValueAt(ls, 9).toString()));
-
-        Aula aulaDestino = new Aula(MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 1).toString()), MetodosUteis.getLocalDateTimeString(model.getValueAt(lst, 2).toString()),
-                model.getValueAt(lst, 4).toString(), (short) Integer.parseInt(model.getValueAt(lst, 3).toString()), (long) Integer.parseInt(model.getValueAt(lst, 0).toString()));
-        Aluno alunoAulaDestino = new Aluno();
-        aulaDestino.setAluno(alunoAulaDestino);
-        aulaDestino.setInstrutor(new Instrutor(model.getValueAt(lst, 9).toString()));
 
 
     }//GEN-LAST:event_tblAulasParaTrocaMouseClicked
@@ -194,7 +182,8 @@ public class AulasAluno extends javax.swing.JFrame {
     public void loadTableAulasParaTroca() {
         ArrayList dados = new ArrayList<>();
 
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno", "Aceita Troca?", "Nome do Instrutor"};
+        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno",
+            "Aceita Troca?", "Nome do Instrutor"};
         for (Aula aulasAluno : AulaController.getAulasAceitamTroca()) {
             if (!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())) {
                 dados.add(new Object[]{
@@ -205,11 +194,18 @@ public class AulasAluno extends javax.swing.JFrame {
                     aulasAluno.getModalidadeAula(),
                     aulasAluno.getAluno().getNome(),
                     aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",
-                    aulasAluno.getInstrutor().getNome()
+                    aulasAluno.getInstrutor().getNome(),
+                    aulasAluno.getInstrutor().getCpf(),
+                    aulasAluno.getAluno().getCpf()
+
                 });
             }
-
+            if (tblAulasParaTroca.getColumnCount() > 0) {
+                tblAulasParaTroca.removeColumn(tblAulasParaTroca.getColumnModel().getColumn(8));
+                tblAulasParaTroca.removeColumn(tblAulasParaTroca.getColumnModel().getColumn(9));
+            }
         }
+
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
         tblAulasParaTroca.setModel(modelo);
 
