@@ -6,8 +6,10 @@
 package autoEscola.view;
 
 import autoEscola.controller.AulaController;
+import autoEscola.controller.SolicitacaoController;
 import autoEscola.model.Aluno.Aluno;
 import autoEscola.model.Aula.Aula;
+import autoEscola.model.Aula.TipoSolicitacao;
 import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
@@ -159,14 +161,17 @@ public class AulasAluno extends javax.swing.JFrame {
 
         try {
             if (categoriaAulaOrigem.equals(categoriaAulaDestino)) {
-                UtilDesktop.msgBox("Aulas compativeis Aula Origem: " + categoriaAulaOrigem + "categoria Aula Destino: " + categoriaAulaDestino);
+               
+                int idAulaOrigem  = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulas.getSelectedRow(), 0).toString());
+                int idAulaDestino = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 0).toString());                                
+                SolicitacaoController.addSolicitacao(idAulaOrigem, idAulaDestino);
                 
 
             } else {
-                UtilDesktop.msgBox("Aulas imcompativeis Aula Origem: " + categoriaAulaOrigem + "categoria Aula Destino: " + categoriaAulaDestino);
+                UtilDesktop.msgBox("Você apenas pode trocar uma aula de mesma categoria!");
             }
         } catch (Exception e) {
-            UtilDesktop.msgBox(e.getMessage());
+            UtilDesktop.msgBox("" + e.getMessage());
         }
 
         /* 

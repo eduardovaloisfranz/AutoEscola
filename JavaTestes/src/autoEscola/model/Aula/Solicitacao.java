@@ -11,7 +11,31 @@ package autoEscola.model.Aula;
  */
 public class Solicitacao {
     private TipoSolicitacao tipoSolicitacao;
-    public Solicitacao(TipoSolicitacao tp){
+    private Aula aulaOrigem;
+    private Aula aulaDestino;
+    
+    
+    public Solicitacao(TipoSolicitacao tp, Aula aulaOrigem, Aula aulaDestino){
         this.tipoSolicitacao = tp;
+        this.aulaOrigem = aulaOrigem;
+        this.aulaDestino = aulaDestino;
+    }
+    
+    private void alterarAula(){
+        tipoSolicitacao = TipoSolicitacao.APROVADO;
+        this.aulaOrigem = this.aulaDestino;
+        this.aulaDestino = this.aulaOrigem;
+    }
+
+    public TipoSolicitacao getTipoSolicitacao() {
+        return tipoSolicitacao;
+    }
+
+    public Aula getAulaOrigem() {
+        return aulaOrigem;
+    }
+
+    public Aula getAulaDestino() {
+        return aulaDestino;
     }
 }

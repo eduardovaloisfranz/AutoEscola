@@ -19,7 +19,7 @@ public enum TipoSolicitacao {
         this.statusSolicitacao = solicitacao;
     }
     
-    public String getModalidade(){
+    public String getSolicitacao(){
         return statusSolicitacao;
     }
 }
