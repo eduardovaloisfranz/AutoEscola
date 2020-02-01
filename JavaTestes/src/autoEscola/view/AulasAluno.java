@@ -13,6 +13,7 @@ import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
 import autoEscola.util.utilitarios.UtilDesktop;
 import java.util.ArrayList;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
@@ -125,9 +126,9 @@ public class AulasAluno extends javax.swing.JFrame {
                 .addComponent(btnLogout)
                 .addGap(229, 229, 229))
             .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
+                .addGap(174, 174, 174)
                 .addComponent(tbPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 1099, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,27 +153,36 @@ public class AulasAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void tblAulasParaTrocaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAulasParaTrocaMouseClicked
-        // get the model from the jtable
-        ModeloTabela model = (ModeloTabela) tblAulasParaTroca.getModel();
 
-        int ls = tblAulas.getSelectedRow();
-        ModeloTabela modelo = (ModeloTabela) tblAulasParaTroca.getModel();
-        int lst = tblAulasParaTroca.getSelectedRow();
-        //UtilDesktop.msgBox("" + model.getValueAt(selectedRowIndex, 0).toString());
-        //ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?" ,"Nome do Instrutor
-        //LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id
+        String categoriaAulaOrigem =  tblAulas.getModel().getValueAt(tblAulas.getSelectedRow(), 4).toString();
+        String categoriaAulaDestino = tblAulasParaTroca.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 4).toString();
 
         try {
-            if ((model.getValueAt(ls, 4).toString()).equals(modelo.getValueAt(lst, 4).toString())) {
-                UtilDesktop.msgBox("Aulas compativeis");
+            if (categoriaAulaOrigem.equals(categoriaAulaDestino)) {
+                UtilDesktop.msgBox("Aulas compativeis Aula Origem: " + categoriaAulaOrigem + "categoria Aula Destino: " + categoriaAulaDestino);
+                
 
             } else {
-                UtilDesktop.msgBox("Aulas imcompativeis");
+                UtilDesktop.msgBox("Aulas imcompativeis Aula Origem: " + categoriaAulaOrigem + "categoria Aula Destino: " + categoriaAulaDestino);
             }
         } catch (Exception e) {
             UtilDesktop.msgBox(e.getMessage());
         }
 
+        /* 
+        Eu sei, nao deveria colocar aqui, mas ninguem vai ver, apenas eu, essas informacoes poderam ser uteis futuramente        
+        Aulas para troca:
+            idAula -> 0
+            Categoria Aula -> 4
+            Instrutor Cpf -> 8
+            Aluno Cpf -> 9
+        ---------------------
+        Minhas Aulas:
+            idAula -> 0
+            Categoria Aula -> 4
+            Cpf Instrutor -> 9;
+        
+         */
 
     }//GEN-LAST:event_tblAulasParaTrocaMouseClicked
 
@@ -182,8 +192,8 @@ public class AulasAluno extends javax.swing.JFrame {
     public void loadTableAulasParaTroca() {
         ArrayList dados = new ArrayList<>();
 
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno",
-            "Aceita Troca?", "Nome do Instrutor"};
+        String[] colunas = new String[]{"id Aula", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno",
+            "Aceita Troca?", "Nome do Instrutor", "CPF Instrutor", "CPF Aluno"};
         for (Aula aulasAluno : AulaController.getAulasAceitamTroca()) {
             if (!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())) {
                 dados.add(new Object[]{
@@ -200,19 +210,21 @@ public class AulasAluno extends javax.swing.JFrame {
 
                 });
             }
-            if (tblAulasParaTroca.getColumnCount() > 0) {
-                tblAulasParaTroca.removeColumn(tblAulasParaTroca.getColumnModel().getColumn(8));
-                tblAulasParaTroca.removeColumn(tblAulasParaTroca.getColumnModel().getColumn(9));
-            }
         }
 
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
         tblAulasParaTroca.setModel(modelo);
 
         for (int i = 0; i < colunas.length; i++) {
-            tblAulasParaTroca.getColumnModel().getColumn(i).setPreferredWidth(80);
-            tblAulasParaTroca.getColumnModel().getColumn(i).setResizable(true);
+            if (i != 0 || i != 8 || i != 9) {
+                tblAulasParaTroca.getColumnModel().getColumn(i).setPreferredWidth(80);
+                tblAulasParaTroca.getColumnModel().getColumn(i).setResizable(true);
+            }
+
         }
+        esconderValoresTabela(tblAulasParaTroca, 0);
+        esconderValoresTabela(tblAulasParaTroca, 8);
+        esconderValoresTabela(tblAulasParaTroca, 9);
         tblAulasParaTroca.getTableHeader().setReorderingAllowed(false);
         tblAulasParaTroca.setAutoResizeMode(tblAulasParaTroca.AUTO_RESIZE_OFF);
 
@@ -222,10 +234,18 @@ public class AulasAluno extends javax.swing.JFrame {
         tblAulasParaTroca.getSelectionModel().setSelectionInterval(0, 0);
     }
 
+    public void esconderValoresTabela(JTable tabela, int indice) {
+        tabela.getColumnModel().getColumn(indice).setMaxWidth(0);
+        tabela.getColumnModel().getColumn(indice).setMinWidth(0);
+        tabela.getColumnModel().getColumn(indice).setPreferredWidth(0);
+        tabela.getColumnModel().getColumn(indice).setResizable(false);
+    }
+
     public void loadTableMinhasAulas() {
         ArrayList dados = new ArrayList<>();
 
-        String[] colunas = new String[]{"ID", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno", "Aceita Troca?", "Nome do Instrutor"};
+        String[] colunas = new String[]{"ID Aula", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "CPF do Aluno", "Nome do Aluno",
+            "Aceita Troca?", "Nome do Instrutor", "CPF Instrutor"};
         for (Aula aulasAluno : AulaController.getAulasPorAluno(this.aluno.getNome(), this.aluno.getCpf())) {
             dados.add(new Object[]{
                 aulasAluno.getId(),
@@ -236,7 +256,8 @@ public class AulasAluno extends javax.swing.JFrame {
                 aulasAluno.getAluno().getCpf(),
                 aulasAluno.getAluno().getNome(),
                 aulasAluno.getAluno().getAceitaTroca() ? "Aceita Troca" : "Não Aceita troca",
-                aulasAluno.getInstrutor().getNome()
+                aulasAluno.getInstrutor().getNome(),
+                aulasAluno.getInstrutor().getCpf()
             });
         }
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
@@ -246,6 +267,10 @@ public class AulasAluno extends javax.swing.JFrame {
             tblAulas.getColumnModel().getColumn(i).setPreferredWidth(80);
             tblAulas.getColumnModel().getColumn(i).setResizable(true);
         }
+
+        esconderValoresTabela(tblAulas, 0);
+        esconderValoresTabela(tblAulas, 9);
+
         tblAulas.getTableHeader().setReorderingAllowed(false);
         tblAulas.setAutoResizeMode(tblAulas.AUTO_RESIZE_OFF);
 

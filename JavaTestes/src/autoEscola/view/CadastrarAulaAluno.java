@@ -36,7 +36,8 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
         initComponents();
         this.inserirAlunosComboBox();
         this.inserirInstrutoresComboBox();
-
+        exibirNomeAlunoSelecionado();
+        exibirNomeInstrutorSelecionado();
         //this.exibirNomeInstrutorSelecionado();
         this.cbAlunosDB.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent arg0) {
@@ -290,14 +291,14 @@ public class CadastrarAulaAluno extends javax.swing.JFrame {
         if (ValidacoesGerais.validarAula(aula, (cbInstrutoresDB.getSelectedItem().toString()))) {
             try {
                 int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Você deseja salvar o registro:\n " + aula.toString() + "Instrutor nome: " + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()) + " Para o Aluno:\n " + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()) , "Aviso", dialogButton);
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Você deseja salvar o registro:\n " + aula.toString() + "Instrutor nome: " + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()) + " Para o Aluno:\n " + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()), "Aviso", dialogButton);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    AulaController.addAula(aula, cbInstrutoresDB.getSelectedItem().toString(), cbAlunosDB.getSelectedItem().toString());                    
+                    AulaController.addAula(aula, cbInstrutoresDB.getSelectedItem().toString(), cbAlunosDB.getSelectedItem().toString());
                     UtilDesktop.msgBox("Registro Salvo com sucesso: " + aula.toString() + "Instrutor nome: " + InstrutorController.getInstrutorPorCpf(cbInstrutoresDB.getSelectedItem().toString()) + " Para o Aluno:\n " + AlunoController.getNomeAlunoPorCpf(cbAlunosDB.getSelectedItem().toString()));
                 } else {
                     UtilDesktop.msgBox("Registro Não Salvo");
                 }
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Problema na inserção, contate o adminstrador: " + e.getMessage());
             }
