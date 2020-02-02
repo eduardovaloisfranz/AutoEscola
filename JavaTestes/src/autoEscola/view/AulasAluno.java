@@ -14,6 +14,7 @@ import autoEscola.model.Instrutor.Instrutor;
 import autoEscola.util.MetodosUteis.MetodosUteis;
 import autoEscola.util.utilitarios.ModeloTabela;
 import autoEscola.util.utilitarios.UtilDesktop;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -165,6 +166,7 @@ public class AulasAluno extends javax.swing.JFrame {
                 int idAulaOrigem  = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulas.getSelectedRow(), 0).toString());
                 int idAulaDestino = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 0).toString());                                
                 SolicitacaoController.addSolicitacao(idAulaOrigem, idAulaDestino);
+                loadTableAulasParaTroca();
                 
 
             } else {
@@ -200,7 +202,7 @@ public class AulasAluno extends javax.swing.JFrame {
         String[] colunas = new String[]{"id Aula", "Data Inicio Aula", "Data Término Aula", "Quantidade de Aulas", "Modalidade da Aula", "Nome do Aluno",
             "Aceita Troca?", "Nome do Instrutor", "CPF Instrutor", "CPF Aluno"};
         for (Aula aulasAluno : AulaController.getAulasAceitamTroca()) {
-            if (!aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())) {
+            if (!(aulasAluno.getAluno().getCpf().equals(this.aluno.getCpf())) && !(aulasAluno.aulaIsTrocada()) && (aulasAluno.getDataAulaInicio().isAfter(LocalDateTime.now()))) {
                 dados.add(new Object[]{
                     aulasAluno.getId(),
                     MetodosUteis.getDataFormatadaBR(aulasAluno.getDataAulaInicio()),

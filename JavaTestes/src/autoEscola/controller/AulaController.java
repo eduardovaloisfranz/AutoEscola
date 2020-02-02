@@ -57,8 +57,8 @@ public class AulaController {
     }
 
     public static void addAula(Aula aula, String cpfInstrutor, String cpfAluno) {
-        String SQL = "INSERT INTO aula (dataAulaInicio, dataAulaTermino, quantidadeAula, modalidadeAula, fk_instrutor, fk_aluno)"
-                + "SELECT ? ,?, ?, ?, a.id, b.id"
+        String SQL = "INSERT INTO aula (dataAulaInicio, dataAulaTermino, quantidadeAula, modalidadeAula, fk_instrutor, fk_aluno, aulaIsTrocada)"
+                + "SELECT ? ,?, ?, ?, a.id, b.id, ?"
                 + " FROM instrutor  a, aluno b WHERE a.cpf = ? AND b.cpf = ?";
         Connection conexao = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
@@ -73,6 +73,7 @@ public class AulaController {
             stmt.setString(4, aula.getModalidadeAula().getModalidade());
             stmt.setString(5, cpfInstrutor);
             stmt.setString(6, cpfAluno);
+            stmt.setBoolean(7, aula.aulaIsTrocada());
             stmt.execute();
 
         } catch (SQLException e) {
@@ -108,7 +109,7 @@ public class AulaController {
         ResultSet resultado = null;
         try {
             conexao = FabricaConexao.getConnection();
-            String sql = "SELECT a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
+            String sql = "SELECT a.aulaIsTrocada'aulaIsTrocada', a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
                     + " JOIN aluno b ON b.id = a.fk_aluno"
                     + " JOIN instrutor c ON a.fk_instrutor = c.id"
                     + " WHERE b.aceitaTroca IS TRUE AND a.dataAulaInicio > ?";
@@ -131,7 +132,8 @@ public class AulaController {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula);
+                boolean aulaIsTrocada = resultado.getBoolean("aulaIsTrocada");
+                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula, aulaIsTrocada);
                 aula.setAluno(aluno);
                 aula.setInstrutor(instrutor);
                 aulas.add(aula);
@@ -162,7 +164,7 @@ public class AulaController {
         ResultSet resultado = null;
         try {
             conexao = FabricaConexao.getConnection();
-            String sql = "SELECT a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
+            String sql = "SELECT a.aulaIsTrocada'aulaIsTrocada', a.id'idAula', a.dataAulaInicio'dataAulaInicio', a.dataAulaTermino'dataAulaTermino', a.quantidadeAula'quantidadeAula', a.modalidadeAula'modalidadeAula', b.cpf'cpfAluno', b.nome'nomeAluno', b.idade'idadeAluno', b.aceitaTroca'alunoAceitaTroca', c.nome'nomeInstrutor', c.cpf'cpfInstrutor' FROM aula AS a"
                     + " JOIN aluno b ON b.id = a.fk_aluno"
                     + " JOIN instrutor c ON a.fk_instrutor = c.id;";
             stmt = conexao.createStatement();
@@ -182,7 +184,8 @@ public class AulaController {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula);
+                boolean aulaIsTrocada = resultado.getBoolean("aulaIsTrocada");
+                Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula, aulaIsTrocada);
                 aula.setAluno(aluno);
                 aula.setInstrutor(instrutor);
                 aulas.add(aula);

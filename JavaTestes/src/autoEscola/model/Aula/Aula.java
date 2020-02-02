@@ -13,11 +13,14 @@ public class Aula {
     private Aluno aluno;
     private static TipoSolicitacao tp;
     private long id;
+    private boolean aulaIsTrocada;
 
     public Aluno getAluno() {
         return aluno;
     }
-
+    public boolean aulaIsTrocada(){
+        return this.aulaIsTrocada;
+    }
     public static TipoSolicitacao getTp() {
         return tp;
     }
@@ -64,7 +67,7 @@ public class Aula {
         
     }
     
-    public Aula(LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id){
+    public Aula(LocalDateTime dataAulaInicio, LocalDateTime dataAulaTermino, String modalidadeAula, short quantidadeAulas, long id, boolean aulaIsTrocada){
         this.id = id;
         this.dataAulaInicio = dataAulaInicio;
         this.dataAulaTermino = dataAulaTermino;
@@ -74,6 +77,7 @@ public class Aula {
             this.modalidadeAula = ModalidadeAula.MOTO;
         }
         this.quantidadeAulas = quantidadeAulas;
+        this.aulaIsTrocada = aulaIsTrocada;
     }
 
     public long getId() {
