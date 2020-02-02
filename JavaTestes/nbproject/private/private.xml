@@ -4,7 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/database/FabricaConexao.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/controller/AulaController.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/util/validacoes/validacoesDataBase/ValidacoesBancoDeDados.java</file>
+            <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/model/Aula/Aula.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/view/AulasAluno.java</file>
             <file>file:/C:/Users/casa/Documents/GitHub/AutoEscola/JavaTestes/src/autoEscola/controller/SolicitacaoController.java</file>
         </group>

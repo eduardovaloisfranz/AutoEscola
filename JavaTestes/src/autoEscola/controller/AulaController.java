@@ -133,6 +133,7 @@ public class AulaController {
                     ex.printStackTrace();
                 }
                 boolean aulaIsTrocada = resultado.getBoolean("aulaIsTrocada");
+                
                 Aula aula = new Aula(dataAulaInicio, dataAulaTermino, modalidadeAula, quantidadeAula, idAula, aulaIsTrocada);
                 aula.setAluno(aluno);
                 aula.setInstrutor(instrutor);

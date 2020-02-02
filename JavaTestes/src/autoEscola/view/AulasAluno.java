@@ -16,6 +16,7 @@ import autoEscola.util.utilitarios.ModeloTabela;
 import autoEscola.util.utilitarios.UtilDesktop;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
@@ -165,8 +166,22 @@ public class AulasAluno extends javax.swing.JFrame {
                
                 int idAulaOrigem  = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulas.getSelectedRow(), 0).toString());
                 int idAulaDestino = Integer.parseInt(tblAulas.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 0).toString());                                
-                SolicitacaoController.addSolicitacao(idAulaOrigem, idAulaDestino);
-                loadTableAulasParaTroca();
+                String dataAulaInicio = (tblAulasParaTroca.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 1)).toString();
+                String dataAulaTermino = (tblAulasParaTroca.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 2)).toString();
+                String modalidadeAula = (tblAulasParaTroca.getModel().getValueAt(tblAulasParaTroca.getSelectedRow(), 4)).toString();
+                String msg = "Deseja pegar a Aula no Dia: " + dataAulaInicio + " " + dataAulaTermino + "Com a Modalidade: " + modalidadeAula;                        
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null, msg , "Aviso", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {                    
+                     SolicitacaoController.addSolicitacao(idAulaOrigem, idAulaDestino);
+                    UtilDesktop.msgBox("Processo de solicitacao de troca iniciou, aguarde a AutoEscola ou o Aluno Confirmar a troca");
+                    tblAulasParaTroca.repaint();
+                }else{
+                    UtilDesktop.msgBox("Registro Não Salvo");
+                }                
+                
+               
+                
                 
 
             } else {
@@ -220,6 +235,7 @@ public class AulasAluno extends javax.swing.JFrame {
         }
 
         ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        modelo.fireTableDataChanged();
         tblAulasParaTroca.setModel(modelo);
 
         for (int i = 0; i < colunas.length; i++) {
